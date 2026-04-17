@@ -1,6 +1,10 @@
+export const dynamic = "force-dynamic"; // ESSA LINHA TIRA O CACHE NA LISTAGEM DE CAMPANHAS
+
 import db from "@/lib/db";
 import CampanhaCard from "@/components/CampanhaCard";
 import Navbar from "@/components/Navbar";
+
+
 
 export default async function PaginaCampanhas() {
   const [rows] = await db.query(`

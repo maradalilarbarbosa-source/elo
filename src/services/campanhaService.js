@@ -35,7 +35,7 @@ export async function createCampanha(campanha) {
 
   const data = await response.json();
 
-  // 🔥 ESSA É A PARTE IMPORTANTE
+  // ESSA É A PARTE IMPORTANTE QUE FAZ A LIBERAÇÃO PARA CRIAR A CAMPANHA
   if (!response.ok) {
     throw new Error(data.message || "Erro ao criar campanha");
   }
