@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Navbar from "@/components/Navbar";
 
 export default function CadastroDoador() {
   const router = useRouter();
@@ -32,7 +31,7 @@ export default function CadastroDoador() {
       const res = await fetch("/api/cadastro", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           nome,
@@ -43,8 +42,8 @@ export default function CadastroDoador() {
           telefone,
           tipo_pessoa: tipoPessoa,
           documento,
-          criarInstituicao: false
-        })
+          criarInstituicao: false,
+        }),
       });
 
       const data = await res.json();
@@ -110,33 +109,51 @@ export default function CadastroDoador() {
   }
 
   return (
-    <>
-      <Navbar />
+    <div style={pageWrapper}>
+      <div style={contentArea}>
+        <div style={topBar}>
+          <img src="/logo-pequena.png" alt="Logo Elo" style={brandLogo} />
 
-      <div style={container}>
-        <div style={leftSide}>
-          <div style={overlay} />
-          <div style={leftContent}>
-            <p style={badge}>Cadastro de doador</p>
-
-            <h1 style={title}>
-              Doe com confiança e acompanhe o impacto da sua contribuição.
-            </h1>
-
-            <p style={subtitle}>
-              Crie sua conta para encontrar campanhas, apoiar instituições sérias
-              e acompanhar o andamento das suas doações dentro da plataforma.
-            </p>
+          <div style={topIcons}>
+            <img
+              src="/icon-home.png"
+              alt="Home"
+              onClick={() => router.push("/")}
+              style={topIcon}
+            />
+            <img
+              src="/icon-user.png"
+              alt="Usuário"
+              onClick={() => router.push("/login")}
+              style={topIcon}
+            />
           </div>
         </div>
 
-        <div style={rightSide}>
-          <div style={card}>
-            <h2 style={cardTitle}>Criar conta de doador</h2>
+        <img
+          src="/elos-verticais.png"
+          alt="Elementos decorativos"
+          style={rightDecoration}
+        />
 
-            <p style={cardText}>
-              Preencha seus dados para começar.
-            </p>
+        <div style={leftColumn}>
+          <h1 style={title}>
+            Cadastre-se como doador e
+            <br />
+            apoie causas com confiança
+          </h1>
+
+          <p style={subtitle}>
+            Crie sua conta para encontrar campanhas, apoiar instituições sérias
+            e acompanhar o impacto da sua contribuição na plataforma.
+          </p>
+        </div>
+
+        <div style={rightColumn}>
+          <div style={card}>
+            <h2 style={cardTitle}>
+              Cadastre-se <span style={titleIcon}>👤</span>
+            </h2>
 
             {erro && <div style={erroBox}>{erro}</div>}
 
@@ -144,13 +161,14 @@ export default function CadastroDoador() {
               <div style={sucessoBox}>
                 <strong>Login criado com sucesso!</strong>
                 <p style={{ margin: "8px 0 0 0" }}>
-                  Agora você já pode entrar na plataforma com seu e-mail e senha.
+                  Agora você já pode entrar na plataforma com seu e-mail e
+                  senha.
                 </p>
 
                 <button
                   type="button"
                   onClick={() => router.push("/login")}
-                  style={{ ...button, marginTop: "14px" }}
+                  style={{ ...primaryButton, marginTop: "14px" }}
                 >
                   Ir para o login
                 </button>
@@ -159,7 +177,7 @@ export default function CadastroDoador() {
 
             <form onSubmit={handleSubmit} style={form}>
               <input
-                placeholder="Nome completo"
+                placeholder="Nome Completo"
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
                 style={input}
@@ -175,10 +193,10 @@ export default function CadastroDoador() {
                 required
               />
 
-              <div style={senhaWrapper}>
+              <div style={senhaLinha}>
                 <input
                   type={mostrarSenha ? "text" : "password"}
-                  placeholder="Crie uma senha"
+                  placeholder="Crie sua senha"
                   value={senha}
                   onChange={(e) => setSenha(e.target.value)}
                   style={inputSenha}
@@ -243,111 +261,206 @@ export default function CadastroDoador() {
               <button
                 type="submit"
                 style={{
-                  ...button,
+                  ...primaryButton,
                   opacity: loading ? 0.7 : 1,
-                  cursor: loading ? "not-allowed" : "pointer"
+                  cursor: loading ? "not-allowed" : "pointer",
                 }}
                 disabled={loading}
               >
-                {loading ? "Cadastrando..." : "Criar conta"}
+                {loading ? "Cadastrando..." : "CRIAR CONTA"}
               </button>
             </form>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
-const container = {
+const pageWrapper = {
+  minHeight: "100vh",
+  background: "#ffffff",
   display: "flex",
-  minHeight: "calc(100vh - 73px)"
-};
-
-const leftSide = {
-  flex: 1,
-  position: "relative",
-  backgroundImage:
-    "url('https://images.unsplash.com/photo-1707760509481-91e26aa19984?q=80&w=710&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  display: "flex",
-  alignItems: "center",
   justifyContent: "center",
-  padding: "40px"
+  alignItems: "center",
+  padding: "32px 40px",
+  boxSizing: "border-box",
 };
 
-const overlay = {
-  position: "absolute",
-  inset: 0,
-  background: "rgba(25, 118, 210, 0.55)"
-};
-
-const leftContent = {
+const contentArea = {
   position: "relative",
-  zIndex: 1,
-  maxWidth: "520px",
-  color: "#fff"
+  width: "100%",
+  maxWidth: "1100px",
+  minHeight: "640px",
+  padding: "18px 10px 0",
+  boxSizing: "border-box",
+  display: "flex",
+  overflow: "visible",
 };
 
-const badge = {
-  display: "inline-block",
-  background: "rgba(255,255,255,0.18)",
-  padding: "8px 14px",
-  borderRadius: "999px",
-  marginBottom: "20px",
-  fontWeight: "bold"
+const topBar = {
+  position: "absolute",
+  top: "0",
+  left: "10px",
+  right: "10px",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  zIndex: 3,
+};
+
+const brandLogo = {
+  width: "110px",
+  objectFit: "contain",
+};
+
+const topIcons = {
+  display: "flex",
+  gap: "16px",
+};
+
+const topIcon = {
+  width: "38px",
+  height: "38px",
+  cursor: "pointer",
+  objectFit: "contain",
+};
+
+const rightDecoration = {
+  position: "absolute",
+  right: "-210px",
+  top: "-50x",
+  height: "700px",
+  opacity: 0.70,
+  zIndex: 0,
+  pointerEvents: "none",
+};
+
+const leftColumn = {
+  width: "46%",
+  position: "relative",
+  zIndex: 2,
+  paddingTop: "95px",
+  paddingRight: "24px",
+  boxSizing: "border-box",
+};
+
+const rightColumn = {
+  width: "54%",
+  display: "flex",
+  justifyContent: "flex-start",
+  alignItems: "center",
+  position: "relative",
+  zIndex: 2,
+  paddingTop: "68px",
 };
 
 const title = {
-  fontSize: "40px",
-  lineHeight: "1.2",
-  marginBottom: "18px"
+  margin: "0 0 14px 0",
+  fontSize: "34px",
+  lineHeight: "1.15",
+  color: "#555",
+  fontWeight: "500",
+  maxWidth: "460px",
 };
 
 const subtitle = {
-  fontSize: "18px",
-  lineHeight: "1.6"
-};
-
-const rightSide = {
-  flex: 1,
-  background: "#f9fbfd",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: "50px"
+  margin: 0,
+  maxWidth: "470px",
+  fontSize: "16px",
+  lineHeight: "1.5",
+  color: "#5e5e5e",
 };
 
 const card = {
-  background: "#fff",
-  padding: "40px",
-  borderRadius: "18px",
   width: "100%",
-  maxWidth: "640px",
+  maxWidth: "390px",
+  background: "#f3f3f3",
+  borderRadius: "28px",
+  boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
+  padding: "28px 28px",
   display: "flex",
   flexDirection: "column",
-  gap: "18px",
-  boxShadow: "0 10px 28px rgba(0,0,0,0.10)"
+  gap: "14px",
 };
 
 const cardTitle = {
   margin: 0,
-  fontSize: "34px",
-  color: "#1f2937"
+  fontSize: "28px",
+  color: "#555",
+  fontWeight: "700",
 };
 
-const cardText = {
-  marginTop: "-4px",
-  marginBottom: "10px",
-  color: "#666",
-  fontSize: "16px"
+const titleIcon = {
+  opacity: 0.45,
+  fontSize: "24px",
 };
 
 const form = {
   display: "flex",
   flexDirection: "column",
-  gap: "14px"
+  gap: "10px",
+};
+
+const duasColunas = {
+  display: "grid",
+  gridTemplateColumns: "1fr 1fr",
+  gap: "10px",
+};
+
+const input = {
+  width: "100%",
+  height: "40px",
+  borderRadius: "999px",
+  border: "1px solid #d2d2d2",
+  background: "#ebebeb",
+  padding: "0 16px",
+  fontSize: "14px",
+  outline: "none",
+  boxSizing: "border-box",
+  color: "#555",
+};
+
+const senhaLinha = {
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
+};
+
+const inputSenha = {
+  flex: 1,
+  height: "40px",
+  borderRadius: "999px",
+  border: "1px solid #d2d2d2",
+  background: "#ebebeb",
+  padding: "0 16px",
+  fontSize: "14px",
+  outline: "none",
+  boxSizing: "border-box",
+  color: "#555",
+};
+
+const botaoOlho = {
+  background: "transparent",
+  border: "none",
+  color: "#999",
+  fontSize: "12px",
+  cursor: "pointer",
+  padding: "0 6px",
+  whiteSpace: "nowrap",
+};
+
+const primaryButton = {
+  width: "170px",
+  height: "40px",
+  borderRadius: "999px",
+  border: "none",
+  background: "#b8d2cd",
+  color: "#555",
+  fontSize: "15px",
+  fontWeight: "700",
+  alignSelf: "center",
+  marginTop: "4px",
 };
 
 const erroBox = {
@@ -355,67 +468,15 @@ const erroBox = {
   color: "#b3261e",
   border: "1px solid #f5c2c0",
   padding: "12px",
-  borderRadius: "8px",
-  fontSize: "14px"
+  borderRadius: "12px",
+  fontSize: "13px",
 };
 
 const sucessoBox = {
   background: "#e8f5e9",
   color: "#1b5e20",
   border: "1px solid #c8e6c9",
-  padding: "16px",
-  borderRadius: "10px",
-  fontSize: "14px"
-};
-
-const duasColunas = {
-  display: "grid",
-  gridTemplateColumns: "1fr 1fr",
-  gap: "12px"
-};
-
-const input = {
-  width: "100%",
-  padding: "14px 16px",
-  borderRadius: "10px",
-  border: "1px solid #d0d7de",
-  fontSize: "16px",
-  outline: "none",
-  boxSizing: "border-box"
-};
-
-const senhaWrapper = {
-  display: "flex",
-  gap: "8px"
-};
-
-const inputSenha = {
-  flex: 1,
-  width: "100%",
-  padding: "14px 16px",
-  borderRadius: "10px",
-  border: "1px solid #d0d7de",
-  fontSize: "16px",
-  outline: "none",
-  boxSizing: "border-box"
-};
-
-const botaoOlho = {
-  background: "#fff",
-  color: "#1976d2",
-  border: "1px solid #1976d2",
-  padding: "0 14px",
-  borderRadius: "8px",
-  cursor: "pointer",
-  fontWeight: "bold"
-};
-
-const button = {
-  background: "#1976d2",
-  color: "#fff",
-  border: "none",
   padding: "12px",
-  borderRadius: "8px",
-  fontSize: "15px",
-  fontWeight: "bold"
+  borderRadius: "12px",
+  fontSize: "13px",
 };

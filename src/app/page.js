@@ -443,8 +443,8 @@ export default function Home() {
       }}
     >
       FAZER LOGIN
-    </button>
-</div>
+       </button>
+     </div>
     </div>
 
     {/* FUNDO INFERIOR */}
@@ -700,22 +700,31 @@ export default function Home() {
           </div>
         )}
 
-        {!loading && ehInstituicao &&
-          campanhas.map((campanha) => {
-            const podeGerenciar =
-              instituicaoAprovada &&
-              Number(campanha.instituicao_id) === Number(instituicao.id);
+        {!loading && ehInstituicao && (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "16px",
+            }}
+          >
+            {campanhas.map((campanha) => {
+              const podeGerenciar =
+                instituicaoAprovada &&
+                Number(campanha.instituicao_id) === Number(instituicao.id);
 
-            return (
-              <CampanhaCard
-                key={campanha.id}
-                campanha={campanha}
-                onDelete={abrirModal}
-                deletando={deletandoId === campanha.id}
-                podeGerenciar={podeGerenciar}
-              />
-            );
-          })}
+              return (
+                <CampanhaCard
+                  key={campanha.id}
+                  campanha={campanha}
+                  onDelete={abrirModal}
+                  deletando={deletandoId === campanha.id}
+                  podeGerenciar={podeGerenciar}
+                />
+              );
+            })}
+          </div>
+        )}
 
         
         {!loading && ehAdmin && (
@@ -912,7 +921,7 @@ export default function Home() {
                     </span>
                   </div>
 
-                  <div style={{ display: "grid", gap: "16px" }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "16px", }}>
                     {campanhas.map((campanha) => (
                       <CampanhaCard
                         key={campanha.id}
@@ -976,7 +985,7 @@ export default function Home() {
                 </button>
               </div>
             ) : (
-              <div style={{ display: "grid", gap: "16px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "16px", }}>
                 {campanhasDoadas.map((campanha) => (
                   <CampanhaCard
                     key={campanha.id}

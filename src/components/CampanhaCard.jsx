@@ -18,8 +18,8 @@ export default function CampanhaCard({
     meta > 0 ? Math.min((valorArrecadado / meta) * 100, 100) : 0;
 
   const descricaoCurta =
-    campanha.descricao?.length > 55
-      ? `${campanha.descricao.slice(0, 55)}...`
+    campanha.descricao?.length > 45
+      ? `${campanha.descricao.slice(0, 45)}...`
       : campanha.descricao || "Sem descrição informada.";
 
   function handleCardClick() {
@@ -50,12 +50,13 @@ export default function CampanhaCard({
       style={{
         background: "#f8f8f8",
         borderRadius: "28px",
-        padding: "10px",
-        boxShadow: "0 10px 22px rgba(0,0,0,0.14)",
+        padding: "18px",
+        boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
         cursor: desabilitarClique ? "default" : "pointer",
         transition: "transform 0.2s ease, box-shadow 0.2s ease",
         overflow: "hidden",
-        minHeight: podeGerenciar ? "auto" : "250px",
+        minHeight: podeGerenciar ? "auto" : "160px",
+        aspectRatio: podeGerenciar ? "auto" : "4 / 3",
       }}
       onMouseEnter={(e) => {
         if (desabilitarClique) return;
@@ -71,7 +72,7 @@ export default function CampanhaCard({
       {/* IMAGEM */}
       <div
         style={{
-          height: "100px",
+          height: podeGerenciar ? "90px" : "70px",
           borderRadius: "16px",
           marginBottom: "10px",
           background: campanha.imagem_url
@@ -101,9 +102,14 @@ export default function CampanhaCard({
           style={{
             margin: "0 0 6px 0",
             fontSize: "12px",
-            lineHeight: "1.3",
+            lineHeight: "1.2",
             color: "#404040",
             fontWeight: "700",
+            minHeight: "29px",
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
           }}
         >
           {campanha.titulo}
@@ -111,23 +117,13 @@ export default function CampanhaCard({
 
         <p
           style={{
-            margin: "0 0 10px 0",
+            margin: "0 0 4px 0",
             fontSize: "12px",
             color: "#5c5c5c",
-            lineHeight: "1.4",
+            lineHeight: "1.2",
           }}
         >
           {descricaoCurta}
-        </p>
-
-        <p
-          style={{
-            margin: "0 0 12px 0",
-            fontSize: "11px",
-            color: "#5c5c5c",
-          }}
-        >
-          R${valorArrecadado.toFixed(2)} doados de R${meta.toFixed(2)}
         </p>
 
         {/* PROGRESSO */}
@@ -137,44 +133,80 @@ export default function CampanhaCard({
             alignItems: "center",
             justifyContent: "space-between",
             gap: "10px",
+            marginTop: "2px",
+            marginBottom: "6px",
+          }}
+        >
+          <div style={{ flex: 1 }}>
+  
+            {/* BARRA */}
+            <div
+              style={{
+                height: "4px",
+                background: "#d9d9d9",
+                borderRadius: "999px",
+                overflow: "hidden",
+                marginBottom: "4px",
+              }}
+            >
+              <div
+                style={{
+                  width: `${progresso}%`,
+                  height: "100%",
+                  background: "#38a89d",
+                  borderRadius: "999px",
+                }}
+              />
+            </div>
+
+            {/* TEXTO ABAIXO */}
+            <p
+              style={{
+                margin: 0,
+                fontSize: "11px",
+                color: "#5c5c5c",
+                fontWeight: "500",
+              }}
+            >
+              R$ { valorArrecadado.toFixed(2)} de R$ { meta.toFixed(2)}
+            </p>
+          </div>
+
+          <div
+          style={{
+            width: "39px",
+            height: "39px",
+            borderRadius: "50%",
+            background: `conic-gradient(
+              #4bb8ad 0% ${progresso}%,
+              #6fd3b4 ${progresso}%,
+              #e6eeee ${progresso}% 100%
+            )`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "0 6px 14px rgba(0,0,0,0.12)",
+            //flexShrink: 0,
           }}
         >
           <div
             style={{
-              flex: 1,
-              height: "5px",
-              background: "#d9d9d9",
-              borderRadius: "999px",
-              overflow: "hidden",
-            }}
-          >
-            <div
-              style={{
-                width: `${progresso}%`,
-                height: "100%",
-                background: "#38a89d",
-                borderRadius: "999px",
-              }}
-            />
-          </div>
-
-          <div
-            style={{
-              minWidth: "36px",
-              height: "36px",
-              borderRadius: "999px",
-              background: "#38a89d",
-              color: "#fff",
+              width: "30px",
+              height: "30px",
+              borderRadius: "50%",
+              background: "#ffffff",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: "10px",
-              fontWeight: "700",
-              boxShadow: "0 4px 10px rgba(0,0,0,0.12)",
+              fontSize: "9px",
+              fontWeight: "600",
+              color: "#2fa4a0",
+              boxShadow: "inset 0 1px 4px rgba(0,0,0,0.08)",
             }}
           >
             {progresso.toFixed(0)}%
           </div>
+        </div>
         </div>
 
         {/* BOTÕES DE GERENCIAMENTO */}

@@ -30,7 +30,7 @@ export default async function PaginaCampanhas() {
     >
       <div
         style={{
-          maxWidth: "960px",
+          maxWidth: "1000px",
           margin: "0 auto",
         }}
       >
@@ -46,11 +46,11 @@ export default async function PaginaCampanhas() {
             {/* LOGO */}
             <div
               style={{
-                width: "100%",
+                width: "130%",
                 display: "flex",
                 justifyContent: "center",
                 position: "absolute",
-                top: "-320px",
+                top: "-430px",
                 left: "50%",
                 transform: "translateX(-50%)",
                 zIndex: 1,
@@ -75,7 +75,7 @@ export default async function PaginaCampanhas() {
                 position: "relative",
                 zIndex: 2,
                 textAlign: "center",
-                paddingTop: "0px",
+                paddingTop: "-0px",
               }}
             >
               <h1
@@ -99,36 +99,42 @@ export default async function PaginaCampanhas() {
               </h1>
 
               {/* ÍCONES */}
-              <div
-                style={{
-                  position: "absolute",
-                  top: "10px",
-                  right: "20px",
-                  display: "flex",
-                  gap: "12px",
-                }}
-              >
-                <Link href="/">
-                  <img
-                    src="/icon-home.png"
-                    alt="Home"
-                    style={{
-                      width: "40px",
-                      cursor: "pointer",
-                    }}
-                  />
-                </Link>
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "10px",
+                    display: "flex",
+                    gap: "14px",
+                  }}
+                >
+                  <Link href="/">
+                    <img
+                      src="/icon-home.png"
+                      alt="Home"
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        cursor: "pointer",
+                        opacity: 0.85,
+                        transition: "all 0.2s ease",
+                      }}
+                    />
+                  </Link>
 
-                <Link href="/login">
-                  <img
-                    src="/icon-user.png"
-                    alt="Login"
-                    style={{
-                      width: "40px",
-                      cursor: "pointer",
-                    }}
-                  />
-                </Link>
+                  <Link href="/login">
+                    <img
+                      src="/icon-user.png"
+                      alt="Login"
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        cursor: "pointer",
+                        opacity: 0.85,
+                        transition: "all 0.2s ease",
+                      }}
+                    />
+                  </Link>
               </div>
             </div>
           </div>

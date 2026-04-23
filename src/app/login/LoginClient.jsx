@@ -2,7 +2,6 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import Navbar from "@/components/Navbar";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -10,16 +9,16 @@ export default function Login() {
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [erro, setErro] = useState("");
   const [loading, setLoading] = useState(false);
-  const searchParams = useSearchParams();
   const [mensagemLogout, setMensagemLogout] = useState("");
 
-      useEffect(() => {
-        if (searchParams.get("logout") === "1") {
-          setMensagemLogout("Você saiu da sua conta com sucesso.");
-        }
-      }, [searchParams]);
-
+  const searchParams = useSearchParams();
   const router = useRouter();
+
+  useEffect(() => {
+    if (searchParams.get("logout") === "1") {
+      setMensagemLogout("Você saiu da sua conta com sucesso.");
+    }
+  }, [searchParams]);
 
   async function handleLogin() {
     try {
@@ -42,7 +41,6 @@ export default function Login() {
       }
 
       localStorage.setItem("usuario", JSON.stringify(data.usuario));
-
       router.push("/");
     } catch (error) {
       console.error(error);
@@ -53,287 +51,369 @@ export default function Login() {
   }
 
   return (
-    <>
-      <Navbar />
+  <div style={pageWrapper}>
+    <div style={contentArea}>
+      <div style={topBar}>
+        <img src="/logo-pequena.png" alt="Logo Elo" style={brandLogo} />
 
-      <div style={container}>
-        <div style={leftSide}>
-          <div style={overlay} />
-          <div style={leftContent}>
-            <p style={badge}>Projeto ELO</p>
-
-            <h1 style={title}>
-              Cada doação pode transformar uma realidade.
-            </h1>
-
-            <p style={subtitle}>
-              Entre na plataforma para apoiar campanhas, acompanhar suas doações
-              e fortalecer instituições que fazem a diferença.
-            </p>
-          </div>
+        <div style={topIcons}>
+          <img
+            src="/icon-home.png"
+            alt="Home"
+            onClick={() => router.push("/")}
+            style={topIcon}
+          />
+          <img
+            src="/icon-user.png"
+            alt="Usuário"
+            style={topIcon}
+          />
         </div>
+      </div>
 
-        <div style={rightSide}>
-          <div style={card}>
-            <h2 style={cardTitle}>Entrar</h2>
+      <img
+        src="/elos-verticais.png"
+        alt="Elementos decorativos"
+        style={rightDecoration}
+      />
 
-            <p style={cardText}>
-              Acesse sua conta para continuar.
-            </p>
+      <div style={leftColumn}>
+        <h1 style={title}>
+          Conecte doadores e
+          <br />
+          instituições em um só lugar
+        </h1>
 
-            {mensagemLogout && (
-                <div style={sucessoBox}>
-                  {mensagemLogout}
-                </div>
-              )}
+        <p style={subtitle}>
+          O projeto ELO foi criado para facilitar a solidariedade com mais
+          clareza, confiança e organização. Aqui, causas sérias encontram
+          pessoas dispostas a ajudar de forma simples e acessível.
+        </p>
 
-            {erro && (
-              <div style={erroBox}>
-                {erro}
-              </div>
-            )}
+        <img
+          src="/ilustracao-login.png"
+          alt="Ilustração"
+          style={illustration}
+        />
+      </div>
 
+      <div style={rightColumn}>
+        <div style={card}>
+          <h2 style={cardTitle}>Faça seu Login</h2>
+
+          <img src="/logo-pequena.png" alt="Logo Elo" style={cardLogo} />
+
+          {mensagemLogout && <div style={sucessoBox}>{mensagemLogout}</div>}
+
+          {erro && <div style={erroBox}>{erro}</div>}
+
+          <input
+            type="email"
+            placeholder="Usuário"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={input}
+          />
+
+          <div style={senhaWrapper}>
             <input
-              type="email"
-              placeholder="Digite seu e-mail"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type={mostrarSenha ? "text" : "password"}
+              placeholder="Senha"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
               style={input}
             />
 
-            <div style={senhaWrapper}>
-              <input
-                type={mostrarSenha ? "text" : "password"}
-                placeholder="Digite sua senha"
-                value={senha}
-                onChange={(e) => setSenha(e.target.value)}
-                style={inputSenha}
-              />
-
-              <button
-                type="button"
-                onClick={() => setMostrarSenha(!mostrarSenha)}
-                style={botaoOlho}
-              >
-                {mostrarSenha ? "Ocultar" : "Mostrar"}
-              </button>
-            </div>
-
             <button
-              style={{
-                ...button,
-                opacity: loading ? 0.7 : 1,
-                cursor: loading ? "not-allowed" : "pointer",
-              }}
-              onClick={handleLogin}
-              disabled={loading}
+              type="button"
+              onClick={() => setMostrarSenha(!mostrarSenha)}
+              style={eyeButton}
             >
-              {loading ? "Entrando..." : "Entrar"}
+              {mostrarSenha ? "Ocultar" : "Mostrar"}
+            </button>
+          </div>
+
+          <button
+                style={{
+                  ...primaryButton,
+                  opacity: loading ? 0.7 : 1,
+                  cursor: loading ? "not-allowed" : "pointer",
+                }}
+                onMouseEnter={(e) => {
+                  if (!loading) {
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                    e.currentTarget.style.boxShadow = "0 12px 22px rgba(0,0,0,0.14)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 8px 18px rgba(0,0,0,0.10)";
+                }}
+                onClick={handleLogin}
+                disabled={loading}
+              >
+            {loading ? "Entrando..." : "Entrar"}
+          </button>
+
+          <p style={registerText}>Cadastre-se já!</p>
+
+          <div style={registerIcons}>
+            <button
+              type="button"
+              onClick={() => router.push("/cadastro/doador")}
+              style={iconButton}
+              title="Cadastro de doador"
+            >
+              <img
+                src="/icon-user.png"
+                alt="Cadastro de doador"
+                style={registerIcon}
+              />
             </button>
 
-            <div style={linksBox}>
-              <p style={linksTitle}>Ainda não tem cadastro?</p>
-
-              <div style={linksButtons}>
-                <button
-                  type="button"
-                  onClick={() => router.push("/cadastro/doador")}
-                  style={secondaryButton}
-                >
-                  Cadastro de doador
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => router.push("/cadastro/instituicao")}
-                  style={secondaryButton}
-                >
-                  Cadastro de instituição
-                </button>
-              </div>
-            </div>
+            <button
+              type="button"
+              onClick={() => router.push("/cadastro/instituicao")}
+              style={iconButton}
+              title="Cadastro de instituição"
+            >
+              <span style={institutionIcon}>🏛️</span>
+            </button>
           </div>
         </div>
       </div>
-    </>
-  );
+    </div>
+  </div>
+);
 }
 
-const container = {
+const pageWrapper = {
+  minHeight: "100vh",
+  background: "#ffffff",
   display: "flex",
-  minHeight: "calc(100vh - 73px)",
-  //background: "#f4f6f8",
-};
-
-const leftSide = {
-  flex: 1,
-  position: "relative",
-  backgroundImage:
-    "url('https://images.unsplash.com/photo-1628534200848-0ad346277e14?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  display: "flex",
-  alignItems: "center",
   justifyContent: "center",
-  padding: "40px",
+  alignItems: "center",
+  padding: "32px 40px",
+  boxSizing: "border-box",
 };
 
-const overlay = {
-  position: "absolute",
-  inset: 0,
-  background: "rgba(25, 118, 210, 0.55)",
-};
-
-const leftContent = {
+const contentArea = {
   position: "relative",
-  zIndex: 1,
-  maxWidth: "520px",
-  color: "#fff",
+  overflow: "visible",
+  width: "100%",
+  maxWidth: "1100px",
+  minHeight: "640px",
+  padding: "18px 10px 0",
+  boxSizing: "border-box",
+  display: "flex",
 };
 
-const badge = {
-  display: "inline-block",
-  background: "rgba(255,255,255,0.18)",
-  padding: "8px 14px",
-  borderRadius: "999px",
-  marginBottom: "20px",
-  fontWeight: "bold",
+const topIcons = {
+  display: "flex",
+  gap: "16px",
+};
+
+const topIcon = {
+  width: "40px",
+  height: "40px",
+  cursor: "pointer",
+  objectFit: "contain",
+};
+
+const rightDecoration = {
+  position: "absolute",
+  right: "-210px", // joga pra fora da tela
+  top: "-50px",
+  height: "700px", // aumenta bastante
+  opacity: 0.70,
+  zIndex: 0,
+  pointerEvents: "none",
+};
+
+const leftColumn = {
+  width: "58%",
+  position: "relative",
+  zIndex: 2,
+  paddingTop: "90px",
+  paddingRight: "30px",
+  boxSizing: "border-box",
+};
+
+const rightColumn = {
+  width: "42%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  position: "relative",
+  zIndex: 2,
+  paddingTop: "70px",
+};
+
+const brandLogo = {
+  width: "110px",
+  objectFit: "contain",
 };
 
 const title = {
-  fontSize: "42px",
-  lineHeight: "1.2",
-  marginBottom: "18px",
+  margin: "0 0 14px 0",
+  fontSize: "34px",
+  lineHeight: "1.18",
+  color: "#555",
+  fontWeight: "500",
+  maxWidth: "520px",
 };
 
 const subtitle = {
-  fontSize: "18px",
-  lineHeight: "1.6",
+  margin: "0 0 24px 0",
+  maxWidth: "500px",
+  fontSize: "16px",
+  lineHeight: "1.5",
+  color: "#5e5e5e",
 };
 
-const rightSide = {
-  flex: 1,
-  background: "#f9fbfd",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: "40px",
+const illustration = {
+  width: "100%",
+  maxWidth: "520px",
+  objectFit: "contain",
+  display: "block",
 };
 
 const card = {
-  background: "#fff",
-  padding: "32px",
-  borderRadius: "16px",
   width: "100%",
-  maxWidth: "520px",
+  maxWidth: "290px",
+  background: "rgba(255,255,255,0.72)",
+  backdropFilter: "blur(14px)",
+  WebkitBackdropFilter: "blur(14px)",
+  border: "1px solid rgba(255,255,255,0.45)",
+  borderRadius: "28px",
+  boxShadow: "0 14px 30px rgba(0,0,0,0.14)",
+  padding: "28px 24px",
   display: "flex",
   flexDirection: "column",
-  gap: "14px",
-  boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
+  alignItems: "center",
+  gap: "12px",
 };
 
 const cardTitle = {
   margin: 0,
-  fontSize: "28px",
-  color: "#1f2937",
+  fontSize: "22px",
+  color: "#555",
+  fontWeight: "700",
+  textAlign: "center",
 };
 
-const cardText = {
-  marginTop: "-4px",
-  marginBottom: "8px",
-  color: "#666",
-};
-
-const erroBox = {
-  background: "#fdecea",
-  color: "#b3261e",
-  border: "1px solid #f5c2c0",
-  padding: "12px",
-  borderRadius: "8px",
-  fontSize: "14px",
+const cardLogo = {
+  width: "78px",
+  objectFit: "contain",
+  marginBottom: "6px",
 };
 
 const input = {
   width: "100%",
-  padding: "12px 14px",
-  borderRadius: "8px",
-  border: "1px solid #d0d7de",
-  fontSize: "15px",
+  height: "40px",
+  borderRadius: "999px",
+  border: "1px solid #d6d6d6",
+  background: "rgba(245,245,245,0.92)",
+  padding: "0 16px",
+  fontSize: "14px",
   outline: "none",
   boxSizing: "border-box",
+  color: "#555",
 };
 
 const senhaWrapper = {
+  width: "100%",
   display: "flex",
+  flexDirection: "column",
   gap: "8px",
 };
 
-const inputSenha = {
-  flex: 1,
+const eyeButton = {
+  alignSelf: "flex-end",
+  background: "transparent",
+  border: "none",
+  color: "#888",
+  fontSize: "12px",
+  cursor: "pointer",
+  padding: 0,
+};
+
+const primaryButton = {
   width: "100%",
-  padding: "12px 14px",
-  borderRadius: "8px",
-  border: "1px solid #d0d7de",
+  height: "42px",
+  borderRadius: "999px",
+  border: "none",
+  background: "linear-gradient(135deg, #bfd8d2, #a8ccc4)",
+  color: "#4f4f4f",
   fontSize: "15px",
-  outline: "none",
+  fontWeight: "700",
+  boxShadow: "0 8px 18px rgba(0,0,0,0.10)",
+  transition: "all 0.25s ease",
+};
+
+const registerText = {
+  margin: "2px 0 0 0",
+  fontSize: "14px",
+  color: "#666",
+};
+
+const registerIcons = {
+  display: "flex",
+  justifyContent: "center",
+  gap: "20px",
+  marginTop: "2px",
+};
+
+const iconButton = {
+  background: "transparent",
+  border: "none",
+  padding: 0,
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+};
+
+const registerIcon = {
+  width: "28px",
+  height: "28px",
+  objectFit: "contain",
+  opacity: 0.55,
+};
+
+const institutionIcon = {
+  fontSize: "28px",
+  opacity: 0.55,
+};
+
+const erroBox = {
+  width: "100%",
+  background: "#fdecea",
+  color: "#b3261e",
+  border: "1px solid #f5c2c0",
+  padding: "10px 12px",
+  borderRadius: "12px",
+  fontSize: "13px",
   boxSizing: "border-box",
 };
 
-const botaoOlho = {
-  background: "#fff",
-  color: "#1976d2",
-  border: "1px solid #1976d2",
-  padding: "0 14px",
-  borderRadius: "8px",
-  cursor: "pointer",
-  fontWeight: "bold",
-};
-
-const button = {
-  background: "#1976d2",
-  color: "#fff",
-  border: "none",
-  padding: "12px",
-  borderRadius: "8px",
-  fontSize: "15px",
-  fontWeight: "bold",
-};
-
-const linksBox = {
-  marginTop: "8px",
-  paddingTop: "16px",
-  borderTop: "1px solid #eee",
-};
-
-const linksTitle = {
-  marginTop: 0,
-  marginBottom: "10px",
-  color: "#555",
-  fontSize: "14px",
-};
-
-const linksButtons = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "10px",
-  maxWidth: "360px",
-};
-
-const secondaryButton = {
-  background: "#fff",
-  color: "#1976d2",
-  border: "1px solid #1976d2",
-  padding: "12px",
-  borderRadius: "8px",
-  cursor: "pointer",
-  fontWeight: "bold",
-};
-
 const sucessoBox = {
+  width: "100%",
   background: "#e8f5e9",
   color: "#1b5e20",
   border: "1px solid #c8e6c9",
-  padding: "12px",
-  borderRadius: "8px",
-  fontSize: "14px",
+  padding: "10px 12px",
+  borderRadius: "12px",
+  fontSize: "13px",
+  boxSizing: "border-box",
+};
+const topBar = {
+  position: "absolute",
+  top: "0",
+  left: "10px",
+  right: "10px",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  zIndex: 3,
 };
