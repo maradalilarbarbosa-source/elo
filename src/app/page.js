@@ -16,7 +16,18 @@ export default function Home() {
   const [campanhaParaExcluir, setCampanhaParaExcluir] = useState(null);
   const [usuario, setUsuario] = useState(null);
   const [instituicao, setInstituicao] = useState(null);
+  const [animarHero, setAnimarHero] = useState(false);
   const estaLogado = !!usuario;
+
+    useEffect(() => {
+  if (!estaLogado) {
+    const timer = setTimeout(() => {
+      setAnimarHero(true);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }
+}, [estaLogado]);
 
   const router = useRouter();
 
@@ -200,382 +211,259 @@ export default function Home() {
 
   return (
     <div style={{ fontFamily: "Arial, sans-serif" }}>
-      <Navbar usuario={usuario} instituicao={instituicao} />
-
+      {estaLogado && (
+       <Navbar usuario={usuario} instituicao={instituicao} />
+      )}
       
-      {!estaLogado && (
+    
+{!estaLogado && (
+  
   <div
     style={{
-      background: "linear-gradient(135deg, #eef4ff 0%, #f8fbff 45%, #ffffff 100%)",
-      padding: "110px 24px 90px",
-      borderBottom: "1px solid #e5e7eb",
-    }}
-  >
-    <div
-      style={{
-        maxWidth: "1180px",
-        margin: "0 auto",
-        display: "grid",
-        gridTemplateColumns: "1.2fr 0.8fr",
-        gap: "40px",
-        alignItems: "center",
-      }}
-    >
-      <div>
-        <p
-          style={{
-            margin: "0 0 14px 0",
-            color: "#1976d2",
-            fontWeight: "bold",
-            fontSize: "14px",
-            textTransform: "uppercase",
-            letterSpacing: "0.8px",
-          }}
-        >
-          Plataforma solidária digital
-        </p>
-
-        <h1
-          style={{
-            fontSize: "56px",
-            lineHeight: "1.1",
-            margin: "0 0 20px 0",
-            color: "#111827",
-            maxWidth: "700px",
-          }}
-        >
-          Conecte doadores e instituições em um só lugar
-        </h1>
-
-        <p
-          style={{
-            fontSize: "19px",
-            color: "#4b5563",
-            lineHeight: "1.8",
-            marginBottom: "30px",
-            maxWidth: "680px",
-          }}
-        >
-          O Projeto ELO foi criado para facilitar a solidariedade com mais
-          clareza, confiança e organização. Aqui, causas sérias encontram
-          pessoas dispostas a ajudar de forma simples e acessível.
-        </p>
-
-        <div
-          style={{
-            display: "flex",
-            gap: "14px",
-            flexWrap: "wrap",
-            marginBottom: "36px",
-          }}
-        >
-          <button
-            onClick={() => router.push("/login")}
-            style={{
-              background: "#1976d2",
-              color: "#fff",
-              border: "none",
-              padding: "15px 24px",
-              borderRadius: "12px",
-              cursor: "pointer",
-              fontWeight: "bold",
-              fontSize: "15px",
-              boxShadow: "0 10px 24px rgba(25, 118, 210, 0.22)",
-            }}
-          >
-            Entrar na plataforma
-          </button>
-
-          <button
-            onClick={() => router.push("/campanhas")}
-            style={{
-              background: "#fff",
-              color: "#1976d2",
-              border: "1px solid #1976d2",
-              padding: "15px 24px",
-              borderRadius: "12px",
-              cursor: "pointer",
-              fontWeight: "bold",
-              fontSize: "15px",
-            }}
-          >
-            Explorar campanhas
-          </button>
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            gap: "14px",
-            flexWrap: "wrap",
-          }}
-        >
-          <div
-            style={{
-              background: "#fff",
-              border: "1px solid #e5e7eb",
-              borderRadius: "14px",
-              padding: "16px 18px",
-              minWidth: "180px",
-              boxShadow: "0 6px 18px rgba(0,0,0,0.04)",
-            }}
-          >
-            <p style={{ margin: "0 0 6px 0", color: "#1976d2", fontWeight: "bold" }}>
-              Transparência
-            </p>
-            <p style={{ margin: 0, color: "#555", fontSize: "14px", lineHeight: "1.5" }}>
-              Instituições analisadas e campanhas organizadas.
-            </p>
-          </div>
-
-          <div
-            style={{
-              background: "#fff",
-              border: "1px solid #e5e7eb",
-              borderRadius: "14px",
-              padding: "16px 18px",
-              minWidth: "180px",
-              boxShadow: "0 6px 18px rgba(0,0,0,0.04)",
-            }}
-          >
-            <p style={{ margin: "0 0 6px 0", color: "#1976d2", fontWeight: "bold" }}>
-              Facilidade
-            </p>
-            <p style={{ margin: 0, color: "#555", fontSize: "14px", lineHeight: "1.5" }}>
-              Um ambiente simples para encontrar e apoiar causas.
-            </p>
-          </div>
-
-          <div
-            style={{
-              background: "#fff",
-              border: "1px solid #e5e7eb",
-              borderRadius: "14px",
-              padding: "16px 18px",
-              minWidth: "180px",
-              boxShadow: "0 6px 18px rgba(0,0,0,0.04)",
-            }}
-          >
-            <p style={{ margin: "0 0 6px 0", color: "#1976d2", fontWeight: "bold" }}>
-              Impacto social
-            </p>
-            <p style={{ margin: 0, color: "#555", fontSize: "14px", lineHeight: "1.5" }}>
-              Mais visibilidade para quem realmente precisa de apoio.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div
-          style={{
-            background: "#ffffff",
-            border: "1px solid #e5e7eb",
-            borderRadius: "24px",
-            padding: "28px",
-            boxShadow: "0 18px 40px rgba(15, 23, 42, 0.08)",
-          }}
-        >
-          <div
-            style={{
-              background: "linear-gradient(135deg, #1976d2 0%, #42a5f5 100%)",
-              borderRadius: "18px",
-              padding: "26px",
-              color: "#fff",
-              marginBottom: "18px",
-            }}
-          >
-            <p style={{ margin: "0 0 8px 0", fontSize: "14px", opacity: 0.95 }}>
-              Projeto ELO
-            </p>
-            <h3 style={{ margin: "0 0 12px 0", fontSize: "28px", lineHeight: "1.2" }}>
-              Tecnologia aproximando solidariedade
-            </h3>
-            <p style={{ margin: 0, lineHeight: "1.7", fontSize: "15px", opacity: 0.95 }}>
-              Uma plataforma pensada para conectar confiança, visibilidade e doação.
-            </p>
-          </div>
-
-          <div
-            style={{
-              display: "grid",
-              gap: "14px",
-            }}
-          >
-            <div
-              style={{
-                background: "#f8fafc",
-                border: "1px solid #e5e7eb",
-                borderRadius: "14px",
-                padding: "16px",
-              }}
-            >
-              <strong style={{ display: "block", marginBottom: "6px", color: "#1f2937" }}>
-                Para doadores
-              </strong>
-              <span style={{ color: "#555", fontSize: "14px", lineHeight: "1.6" }}>
-                Encontre campanhas e acompanhe contribuições com mais clareza.
-              </span>
-            </div>
-
-            <div
-              style={{
-                background: "#f8fafc",
-                border: "1px solid #e5e7eb",
-                borderRadius: "14px",
-                padding: "16px",
-              }}
-            >
-              <strong style={{ display: "block", marginBottom: "6px", color: "#1f2937" }}>
-                Para instituições
-              </strong>
-              <span style={{ color: "#555", fontSize: "14px", lineHeight: "1.6" }}>
-                Divulgue campanhas e aumente a visibilidade da sua causa.
-              </span>
-            </div>
-
-            <div
-              style={{
-                background: "#f8fafc",
-                border: "1px solid #e5e7eb",
-                borderRadius: "14px",
-                padding: "16px",
-              }}
-            >
-              <strong style={{ display: "block", marginBottom: "6px", color: "#1f2937" }}>
-                Para administração
-              </strong>
-              <span style={{ color: "#555", fontSize: "14px", lineHeight: "1.6" }}>
-                Faça a gestão das instituições e acompanhe a plataforma com segurança.
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
-
-
-          {!estaLogado && (
-  <div
-    style={{
-      padding: "80px 24px 100px",
+      position: "relative",
+      minHeight: "100vh",
       background: "#ffffff",
+      width: "100%",
+      overflow: "hidden",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "flex-start",
     }}
   >
+
+    {/* BOTÕES SUPERIORES */}
+      <div
+        style={{
+          position: "absolute",
+          top: "20px",
+          right: "30px",
+          zIndex: 10,
+          display: "flex",
+          alignItems: "center",
+          gap: "18px",
+        }}
+      >
+      {/* HOME */}
+      <img
+        src="/icon-home.png"
+        alt="Home"
+        onClick={() => router.push("/")}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "translateY(-3px) scale(1.1)";
+          e.currentTarget.style.opacity = "1";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "translateY(0) scale(1)";
+          e.currentTarget.style.opacity = "0.85";
+        }}
+        style={{
+          width: "40px",
+          height: "40px",
+          cursor: "pointer",
+          opacity: "0.85",
+          transition: "all 0.2s ease",
+        }}
+      />
+
+    {/* USUÁRIO */}
+    <img
+      src="/icon-user.png"
+      alt="Login"
+      onClick={() => router.push("/login")}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translateY(-3px) scale(1.1)";
+        e.currentTarget.style.opacity = "1";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateY(0) scale(1)";
+        e.currentTarget.style.opacity = "0.85";
+      }}
+      style={{
+        width: "40px",
+        height: "40px",
+        cursor: "pointer",
+        opacity: "0.85",
+        transition: "all 0.2s ease",
+      }}
+    />
+      </div>
+
+    {/* LOGO SUPERIOR GRANDE */}
+    
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          position: "relative",
+          zIndex: 3,
+          marginTop: "-395px",
+          opacity: animarHero ? 1 : 0,
+          transform: animarHero ? "translateY(0)" : "translateY(-40px)",
+          transition: "all 0.8s ease",
+        }}
+      >
+      <img
+        src="/logoHero.png"
+        alt="Logo Projeto ELO"
+        style={{
+          width: "400vw", // largura logo
+          maxWidth: "95%",
+          height: "auto",
+          objectFit: "contain",
+        }}
+      />
+    </div>
+
+    {/* NOME ELO */}
     <div
       style={{
-        maxWidth: "1180px",
-        margin: "0 auto",
+        position: "relative",
+        zIndex: 3,
+        marginTop: "-360px",
+        textAlign: "center",
+        opacity: animarHero ? 1 : 0,
+        transform: animarHero ? "translateY(0)" : "translateY(-25px)",
+        transition: "all 1s ease",
+        transitionDelay: "0.15s",
       }}
     >
-      <div
+      <h1
         style={{
-          textAlign: "center",
-          marginBottom: "50px",
+          margin: 0,
+          fontSize: "60px",
+          fontWeight: "700",
+          lineHeight: "1",
+          color: "#5c5c5c",
         }}
       >
-        <p
-          style={{
-            margin: "0 0 10px 0",
-            color: "#1976d2",
-            fontWeight: "bold",
-            fontSize: "14px",
-            textTransform: "uppercase",
-            letterSpacing: "0.8px",
-          }}
-        >
-          Nosso propósito
-        </p>
-
-        <h2
-          style={{
-            fontSize: "38px",
-            color: "#111827",
-            margin: "0 0 16px 0",
-          }}
-        >
-          Uma ponte entre quem quer ajudar e quem precisa
-        </h2>
-
-        <p
-          style={{
-            maxWidth: "760px",
-            margin: "0 auto",
-            color: "#556070",
-            fontSize: "18px",
-            lineHeight: "1.8",
-          }}
-        >
-          O Projeto ELO nasce com a proposta de usar a tecnologia para ampliar o
-          alcance de instituições comprometidas com causas sociais, oferecendo mais
-          confiança para o doador e mais visibilidade para quem precisa arrecadar.
-        </p>
-      </div>
-
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "20px",
-        }}
-      >
-        <div
-          style={{
-            background: "#f8fbff",
-            border: "1px solid #dbe7ff",
-            borderRadius: "18px",
-            padding: "26px",
-            boxShadow: "0 8px 24px rgba(25, 118, 210, 0.06)",
-          }}
-        >
-          <h3 style={{ marginTop: 0, marginBottom: "12px", color: "#1f2937" }}>
-            Mais confiança
-          </h3>
-          <p style={{ margin: 0, color: "#555", lineHeight: "1.7" }}>
-            O sistema ajuda a organizar o processo de doação e reforça a credibilidade
-            das instituições cadastradas.
-          </p>
-        </div>
-
-        <div
-          style={{
-            background: "#f8fbff",
-            border: "1px solid #dbe7ff",
-            borderRadius: "18px",
-            padding: "26px",
-            boxShadow: "0 8px 24px rgba(25, 118, 210, 0.06)",
-          }}
-        >
-          <h3 style={{ marginTop: 0, marginBottom: "12px", color: "#1f2937" }}>
-            Mais alcance
-          </h3>
-          <p style={{ margin: 0, color: "#555", lineHeight: "1.7" }}>
-            Instituições podem divulgar campanhas com mais facilidade e alcançar
-            pessoas dispostas a contribuir.
-          </p>
-        </div>
-
-        <div
-          style={{
-            background: "#f8fbff",
-            border: "1px solid #dbe7ff",
-            borderRadius: "18px",
-            padding: "26px",
-            boxShadow: "0 8px 24px rgba(25, 118, 210, 0.06)",
-          }}
-        >
-          <h3 style={{ marginTop: 0, marginBottom: "12px", color: "#1f2937" }}>
-            Mais impacto
-          </h3>
-          <p style={{ margin: 0, color: "#555", lineHeight: "1.7" }}>
-            Cada campanha publicada representa uma oportunidade concreta de gerar
-            transformação social por meio da solidariedade.
-          </p>
-        </div>
-      </div>
+        ELO
+      </h1>
     </div>
+
+    {/* FRASE + BOTÕES */}
+    <div
+      style={{
+        position: "relative",
+        zIndex: 4,
+        marginTop: "50px",
+        width: "100%",
+        maxWidth: "980px",
+        padding: "0 20px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        textAlign: "center",
+        opacity: animarHero ? 1 : 0,
+        transform: animarHero ? "translateY(0)" : "translateY(35px)",
+        transition: "all 1s ease",
+        transitionDelay: "0.3s",
+      }}
+    >
+      <h2
+        style={{
+          margin: "0 0 48px 0",
+          fontSize: "30px",
+          fontWeight: "1000",
+          lineHeight: "1.15",
+          color: "#4f4f4f",
+          textTransform: "uppercase",
+          maxWidth: "760px",
+          textShadow: "0 4px 10px rgba(0,0,0,0.18)",
+        }}
+      >
+        QUE CONECTA OS CORAÇÕES E
+        <br />
+        CONSTRÓI O FUTURO
+      </h2>
+
+      <div
+  style={{
+    marginTop: "50px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  }}
+>
+  <button
+      onClick={() => router.push("/campanhas")}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translateY(-4px) scale(1.02)";
+        e.currentTarget.style.boxShadow = "0 14px 28px rgba(0,0,0,0.26)";
+        e.currentTarget.style.background = "#ffffff";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateY(0) scale(1)";
+        e.currentTarget.style.boxShadow = "0 8px 18px rgba(0,0,0,0.22)";
+        e.currentTarget.style.background = "#f3f3f3";
+      }}
+      style={{
+        background: "#f3f3f3",
+        border: "none",
+        padding: "16px 44px",
+        borderRadius: "999px",
+        fontSize: "15px",
+        fontWeight: "700",
+        color: "#4f4f4f",
+        cursor: "pointer",
+        minWidth: "230px",
+        boxShadow: "0 8px 18px rgba(0,0,0,0.22)",
+        marginBottom: "18px",
+        transition: "all 0.25s ease",
+      }}
+    >
+      DOAR AGORA
+    </button>
+
+  <button
+      onClick={() => router.push("/login")}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translateY(-3px) scale(1.02)";
+        e.currentTarget.style.boxShadow = "0 12px 24px rgba(0,0,0,0.22)";
+        e.currentTarget.style.background = "#ffffff";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateY(0) scale(1)";
+        e.currentTarget.style.boxShadow = "0 8px 18px rgba(0,0,0,0.22)";
+        e.currentTarget.style.background = "#f3f3f3";
+      }}
+      style={{
+        background: "transparent",
+        border: "2px solid #e0e0e0",
+        padding: "12px 28px",
+        borderRadius: "999px",
+        fontSize: "12px",
+        fontWeight: "700",
+        color: "#4f4f4f",
+        cursor: "pointer",
+        minWidth: "160px",
+        boxShadow: "0 8px 18px rgba(0,0,0,0.22)",
+        transition: "all 0.25s ease",
+      }}
+    >
+      FAZER LOGIN
+    </button>
+</div>
+    </div>
+
+    {/* FUNDO INFERIOR */}
+    <img
+      src="/fundo_de_baixo_hero.png"
+      alt="Fundo decorativo"
+      style={{
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        width: "100vw",
+        maxHeight: "800px", // 👈 controla a altura aqui
+        objectFit: "cover", // 👈 corta o excesso
+       // transform: "translateY(100px)",
+        zIndex: 1,
+        pointerEvents: "none",
+      }}
+    />
+    
   </div>
 )}
 

@@ -18,8 +18,8 @@ export default function CampanhaCard({
     meta > 0 ? Math.min((valorArrecadado / meta) * 100, 100) : 0;
 
   const descricaoCurta =
-    campanha.descricao?.length > 120
-      ? `${campanha.descricao.slice(0, 120)}...`
+    campanha.descricao?.length > 55
+      ? `${campanha.descricao.slice(0, 55)}...`
       : campanha.descricao || "Sem descrição informada.";
 
   function handleCardClick() {
@@ -48,35 +48,37 @@ export default function CampanhaCard({
     <div
       onClick={handleCardClick}
       style={{
-        background: "#ffffff",
-        borderRadius: "18px",
-        padding: "16px",
-        boxShadow: "0 10px 28px rgba(15, 23, 42, 0.08)",
-        transition: "transform 0.2s ease, box-shadow 0.2s ease",
+        background: "#f8f8f8",
+        borderRadius: "28px",
+        padding: "10px",
+        boxShadow: "0 10px 22px rgba(0,0,0,0.14)",
         cursor: desabilitarClique ? "default" : "pointer",
-        border: "1px solid #eaeef4",
+        transition: "transform 0.2s ease, box-shadow 0.2s ease",
         overflow: "hidden",
+        minHeight: podeGerenciar ? "auto" : "250px",
       }}
       onMouseEnter={(e) => {
         if (desabilitarClique) return;
         e.currentTarget.style.transform = "translateY(-4px)";
-        e.currentTarget.style.boxShadow = "0 16px 36px rgba(15, 23, 42, 0.12)";
+        e.currentTarget.style.boxShadow = "0 14px 26px rgba(0,0,0,0.18)";
       }}
       onMouseLeave={(e) => {
         if (desabilitarClique) return;
         e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.boxShadow = "0 10px 28px rgba(15, 23, 42, 0.08)";
+        e.currentTarget.style.boxShadow = "0 10px 22px rgba(0,0,0,0.14)";
       }}
     >
+      {/* IMAGEM */}
       <div
         style={{
-          height: "180px",
-          borderRadius: "14px",
-          marginBottom: "18px",
+          height: "100px",
+          borderRadius: "16px",
+          marginBottom: "10px",
           background: campanha.imagem_url
             ? `url(${campanha.imagem_url}) center/cover no-repeat`
             : "linear-gradient(135deg, #dbeafe 0%, #bfdbfe 35%, #93c5fd 100%)",
           position: "relative",
+          overflow: "hidden",
         }}
       >
         {!campanha.imagem_url && (
@@ -84,195 +86,64 @@ export default function CampanhaCard({
             style={{
               position: "absolute",
               inset: 0,
-              background:
-                "linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.08) 100%)",
+              background: "linear-gradient(135deg, #6fd3b4, #3fa7d6)",
+              boxShadow: "inset 0 2px 6px rgba(255,255,255,0.2)",
+              opacity: 0.9,
+              borderRadius: "16px",
             }}
           />
         )}
-
-        <div
-          style={{
-            position: "absolute",
-            top: "12px",
-            left: "12px",
-            background: "rgba(255,255,255,0.92)",
-            color: "#1d4ed8",
-            padding: "6px 10px",
-            borderRadius: "999px",
-            fontSize: "12px",
-            fontWeight: "700",
-            boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
-          }}
-        >
-          {progresso.toFixed(0)}% da meta
-        </div>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-        <div>
-          <h3
-            style={{
-              margin: "0 0 10px 0",
-              fontSize: "26px",
-              lineHeight: "1.3",
-              color: "#111827",
-            }}
-          >
-            {campanha.titulo}
-          </h3>
+      {/* TEXTO */}
+      <div style={{ padding: "0 4px" }}>
+        <h3
+          style={{
+            margin: "0 0 6px 0",
+            fontSize: "12px",
+            lineHeight: "1.3",
+            color: "#404040",
+            fontWeight: "700",
+          }}
+        >
+          {campanha.titulo}
+        </h3>
 
-          <p
-            style={{
-              margin: 0,
-              color: "#4b5563",
-              fontSize: "15px",
-              lineHeight: "1.7",
-            }}
-          >
-            {descricaoCurta}
-          </p>
-        </div>
+        <p
+          style={{
+            margin: "0 0 10px 0",
+            fontSize: "12px",
+            color: "#5c5c5c",
+            lineHeight: "1.4",
+          }}
+        >
+          {descricaoCurta}
+        </p>
 
-        {campanha.instituicao_nome && (
-          <div
-            style={{
-              background: "#f8fafc",
-              border: "1px solid #e5e7eb",
-              borderRadius: "12px",
-              padding: "10px 12px",
-            }}
-          >
-            <p
-              style={{
-                margin: 0,
-                fontSize: "13px",
-                color: "#6b7280",
-              }}
-            >
-              Instituição
-            </p>
+        <p
+          style={{
+            margin: "0 0 12px 0",
+            fontSize: "11px",
+            color: "#5c5c5c",
+          }}
+        >
+          R${valorArrecadado.toFixed(2)} doados de R${meta.toFixed(2)}
+        </p>
 
-            <p
-              style={{
-                margin: "4px 0 0 0",
-                fontSize: "14px",
-                color: "#1f2937",
-                fontWeight: "600",
-              }}
-            >
-              {campanha.instituicao_nome}
-            </p>
-          </div>
-        )}
-
+        {/* PROGRESSO */}
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "12px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "10px",
           }}
         >
           <div
             style={{
-              background: "#f9fafb",
-              borderRadius: "12px",
-              padding: "12px",
-              border: "1px solid #eef2f7",
-            }}
-          >
-            <p
-              style={{
-                margin: "0 0 6px 0",
-                fontSize: "12px",
-                color: "#6b7280",
-                textTransform: "uppercase",
-                fontWeight: "700",
-                letterSpacing: "0.4px",
-              }}
-            >
-              Meta
-            </p>
-
-            <p
-              style={{
-                margin: 0,
-                fontSize: "18px",
-                color: "#111827",
-                fontWeight: "700",
-              }}
-            >
-              R$ {meta.toFixed(2)}
-            </p>
-          </div>
-
-          <div
-            style={{
-              background: "#f9fafb",
-              borderRadius: "12px",
-              padding: "12px",
-              border: "1px solid #eef2f7",
-            }}
-          >
-            <p
-              style={{
-                margin: "0 0 6px 0",
-                fontSize: "12px",
-                color: "#6b7280",
-                textTransform: "uppercase",
-                fontWeight: "700",
-                letterSpacing: "0.4px",
-              }}
-            >
-              Arrecadado
-            </p>
-
-            <p
-              style={{
-                margin: 0,
-                fontSize: "18px",
-                color: "#111827",
-                fontWeight: "700",
-              }}
-            >
-              R$ {valorArrecadado.toFixed(2)}
-            </p>
-          </div>
-        </div>
-
-        <div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "8px",
-            }}
-          >
-            <span
-              style={{
-                fontSize: "13px",
-                color: "#4b5563",
-                fontWeight: "600",
-              }}
-            >
-              Progresso da campanha
-            </span>
-
-            <span
-              style={{
-                fontSize: "13px",
-                color: "#16a34a",
-                fontWeight: "700",
-              }}
-            >
-              {progresso.toFixed(0)}%
-            </span>
-          </div>
-
-          <div
-            style={{
-              height: "12px",
-              background: "#e5e7eb",
+              flex: 1,
+              height: "5px",
+              background: "#d9d9d9",
               borderRadius: "999px",
               overflow: "hidden",
             }}
@@ -280,21 +151,39 @@ export default function CampanhaCard({
             <div
               style={{
                 width: `${progresso}%`,
-                background: "linear-gradient(90deg, #22c55e 0%, #16a34a 100%)",
                 height: "100%",
-                transition: "width 0.3s ease",
+                background: "#38a89d",
                 borderRadius: "999px",
               }}
             />
           </div>
+
+          <div
+            style={{
+              minWidth: "36px",
+              height: "36px",
+              borderRadius: "999px",
+              background: "#38a89d",
+              color: "#fff",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "10px",
+              fontWeight: "700",
+              boxShadow: "0 4px 10px rgba(0,0,0,0.12)",
+            }}
+          >
+            {progresso.toFixed(0)}%
+          </div>
         </div>
 
+        {/* BOTÕES DE GERENCIAMENTO */}
         {podeGerenciar && (
           <div
             style={{
               display: "flex",
               gap: "10px",
-              marginTop: "6px",
+              marginTop: "14px",
             }}
           >
             <button
@@ -304,11 +193,11 @@ export default function CampanhaCard({
                 background: "#1976d2",
                 color: "#fff",
                 border: "none",
-                padding: "12px",
+                padding: "10px",
                 borderRadius: "10px",
                 cursor: "pointer",
                 fontWeight: "700",
-                fontSize: "14px",
+                fontSize: "13px",
               }}
             >
               Editar
@@ -322,12 +211,12 @@ export default function CampanhaCard({
                 background: "#d32f2f",
                 color: "#fff",
                 border: "none",
-                padding: "12px",
+                padding: "10px",
                 borderRadius: "10px",
                 cursor: deletando ? "not-allowed" : "pointer",
                 opacity: deletando ? 0.7 : 1,
                 fontWeight: "700",
-                fontSize: "14px",
+                fontSize: "13px",
               }}
             >
               {deletando ? "Excluindo..." : "Excluir"}

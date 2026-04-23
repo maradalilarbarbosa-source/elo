@@ -1,8 +1,9 @@
-export const dynamic = "force-dynamic"; // ESSA LINHA TIRA O CACHE NA LISTAGEM DE CAMPANHAS
+export const dynamic = "force-dynamic";
 
 import db from "@/lib/db";
+import Link from "next/link";
 import CampanhaCard from "@/components/CampanhaCard";
-import Navbar from "@/components/Navbar";
+
 
 
 
@@ -19,80 +20,118 @@ export default async function PaginaCampanhas() {
 
   return (
   <>
-    <Navbar />
 
     <div
       style={{
         minHeight: "100vh",
-        background: "#f5f7fb",
-        padding: "60px 20px",
+        background: "#ffffff",
+        padding: "40px 20px 60px",
       }}
     >
       <div
         style={{
-          maxWidth: "1200px",
+          maxWidth: "960px",
           margin: "0 auto",
         }}
       >
-        {/* HEADER */}
-        <div
-          style={{
-            marginBottom: "40px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: "20px",
-          }}
-        >
-          <div>
-            <p
-              style={{
-                margin: "0 0 6px 0",
-                color: "#1976d2",
-                fontWeight: "bold",
-                fontSize: "13px",
-                textTransform: "uppercase",
-              }}
-            >
-              Plataforma ELO
-            </p>
-
-            <h1
-              style={{
-                margin: "0 0 10px 0",
-                fontSize: "36px",
-                color: "#1f2937",
-              }}
-            >
-              Campanhas disponíveis
-            </h1>
-
-            <p style={{ color: "#666", margin: 0 }}>
-              Explore campanhas ativas e encontre causas para apoiar.
-            </p>
-          </div>
-
+        
+        {/* TOPO LIVRE (SEM CAIXA) */}
           <div
             style={{
-              background: "#ffffff",
-              border: "1px solid #e5e7eb",
-              borderRadius: "14px",
-              padding: "18px 22px",
-              minWidth: "160px",
-              textAlign: "center",
-              boxShadow: "0 6px 18px rgba(0,0,0,0.05)",
+              position: "relative",
+              width: "100%",
+              marginBottom: "20px",
             }}
           >
-            <p style={{ margin: 0, fontSize: "13px", color: "#666" }}>
-              Total de campanhas
-            </p>
+            {/* LOGO */}
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                position: "absolute",
+                top: "-320px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                zIndex: 1,
+                pointerEvents: "none",
+              }}
+            >
+              <img
+                src="/logoHero.png"
+                alt="Topo Campanhas"
+                style={{
+                  width: "115%",
+                  maxWidth: "none",
+                  height: "auto",
+                  objectFit: "contain",
+                }}
+              />
+            </div>
 
-            <h2 style={{ margin: 0, color: "#1976d2", fontSize: "28px" }}>
-              {rows.length}
-            </h2>
+            {/* TÍTULO */}
+            <div
+              style={{
+                position: "relative",
+                zIndex: 2,
+                textAlign: "center",
+                paddingTop: "0px",
+              }}
+            >
+              <h1
+                style={{
+                  margin: 0,
+                  fontSize: "36px",
+                  color: "#2fa4a0",
+                  fontWeight: "400",
+                  textAlign: "center",
+                  letterSpacing: "0.5px",
+                  textShadow: `
+                    -1px -1px 0 #ffffff,
+                    1px -1px 0 #ffffff,
+                    -1px  1px 0 #ffffff,
+                    1px  1px 0 #ffffff,
+                    0px  2px 6px rgba(0,0,0,0.15)
+                  `,
+                }}
+              >
+                Campanhas Disponíveis
+              </h1>
+
+              {/* ÍCONES */}
+              <div
+                style={{
+                  position: "absolute",
+                  top: "10px",
+                  right: "20px",
+                  display: "flex",
+                  gap: "12px",
+                }}
+              >
+                <Link href="/">
+                  <img
+                    src="/icon-home.png"
+                    alt="Home"
+                    style={{
+                      width: "40px",
+                      cursor: "pointer",
+                    }}
+                  />
+                </Link>
+
+                <Link href="/login">
+                  <img
+                    src="/icon-user.png"
+                    alt="Login"
+                    style={{
+                      width: "40px",
+                      cursor: "pointer",
+                    }}
+                  />
+                </Link>
+              </div>
+            </div>
           </div>
-        </div>
 
         {/* CONTEÚDO */}
         {rows.length === 0 ? (
@@ -117,8 +156,10 @@ export default async function PaginaCampanhas() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-              gap: "20px",
+              gridTemplateColumns: "repeat(3, minmax(0, 280px))",
+              justifyContent: "center",
+              gap: "18px",
+              marginTop: "90px",
             }}
           >
             {rows.map((campanha) => (
