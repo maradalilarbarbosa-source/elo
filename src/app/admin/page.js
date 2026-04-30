@@ -89,13 +89,69 @@ export default function AdminPage() {
       <Navbar usuario={usuarioLogado} />
 
       <div style={container}>
-        <div style={content}>
+  {/* FUNDO ESQUERDA */}
+  <img
+    src="/elos-verticais-esquerda.png"
+    style={{
+      position: "absolute",
+      left: "-400px",
+      top: "10px",
+      height: "650px",
+      opacity: 0.25,
+      zIndex: 0,
+      pointerEvents: "none",
+    }}
+  />
+
+  {/* FUNDO DIREITA */}
+  <img
+    src="/elos-verticais.png"
+    style={{
+      position: "absolute",
+      right: "-400px",
+      top: "10px",
+      height: "650px",
+      opacity: 0.25,
+      zIndex: 0,
+      pointerEvents: "none",
+    }}
+  />
+        <div
+  style={{
+    maxWidth: "1120px",
+    width: "100%",
+    background: "#fff",
+    borderRadius: "28px",
+    padding: "40px",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+    position: "relative",
+    zIndex: 1,
+  }}
+>
           <div style={header}>
-            <h1 style={title}>Painel do Administrador</h1>
-            <p style={subtitle}>
-              Gerencie as instituições cadastradas na plataforma.
-            </p>
-          </div>
+  <h1
+    style={{
+      margin: "0 0 10px 0",
+      fontSize: "36px",
+      fontWeight: "700",
+      color: "#2f8f87", // verde padrão
+      textAlign: "center",
+    }}
+  >
+    Gerenciar Instituições
+  </h1>
+
+  <p
+    style={{
+      margin: 0,
+      fontSize: "16px",
+      color: "#5f6b7a",
+      textAlign: "center",
+    }}
+  >
+    Gerencie as instituições cadastradas na plataforma.
+  </p>
+</div>
 
           {mensagem && <div style={sucessoBox}>{mensagem}</div>}
 
@@ -105,7 +161,8 @@ export default function AdminPage() {
             <>
               <Section
                 titulo="Pendentes"
-                cor="#f59e0b"
+                cor="#fddc05"
+                background="rgba(242, 242, 16, 0.19)"
                 lista={pendentes}
                 vazio="Nenhuma instituição pendente"
               >
@@ -148,9 +205,10 @@ export default function AdminPage() {
 
               <Section
                 titulo="Aprovadas"
-                cor="#22c55e"
+                cor="#2f8f87"
                 lista={aprovadas}
                 vazio="Nenhuma instituição aprovada"
+                background="rgba(47, 143, 135, 0.12)"
               >
                 {(u) => (
                   <Card key={u.id}>
@@ -162,9 +220,10 @@ export default function AdminPage() {
 
               <Section
                 titulo="Reprovadas"
-                cor="#ef4444"
+                cor="#d32f2f"
                 lista={reprovadas}
                 vazio="Nenhuma instituição reprovada"
+                background="rgba(143, 47, 47, 0.24)"
               >
                 {(u) => (
                   <Card key={u.id}>
@@ -184,15 +243,32 @@ export default function AdminPage() {
   );
 }
 
-function Section({ titulo, cor, lista, vazio, children }) {
+function Section({ titulo, cor, background, lista, vazio, children }) {
   return (
-    <div style={{ marginBottom: "40px" }}>
-      <h2 style={{ color: cor, marginBottom: "16px" }}>{titulo}</h2>
+    <div
+      style={{
+        marginBottom: "10px",
+        background: background || "transparent",
+        borderRadius: "18px",
+        padding: "20px",
+      }}
+    >
+      <h2
+        style={{
+          color: cor,
+          margin: "0 0 16px 0",
+          fontSize: "20px",
+          fontWeight: "650",
+          textAlign: "center",
+        }}
+      >
+        {titulo}
+      </h2>
 
       {lista.length === 0 ? (
-        <p style={{ color: "#666" }}>{vazio}</p>
+        <p style={{ color: "#666", margin: 0 }}>{vazio}</p>
       ) : (
-          <div style={{ display: "grid", gap: "16px" }}>
+        <div style={{ display: "grid", gap: "16px" }}>
           {lista.map(children)}
         </div>
       )}
@@ -222,7 +298,12 @@ function Info({ u }) {
 const container = {
   minHeight: "100vh",
   background: "#f5f7fb",
-  padding: "40px 20px"
+  padding: "55px 20px",
+  position: "relative",
+  overflow: "hidden",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
 };
 
 const content = {
@@ -236,7 +317,8 @@ const header = {
 
 const title = {
   margin: 0,
-  fontSize: "32px"
+  fontSize: "32px",
+  color: "#1f2937",
 };
 
 const subtitle = {
@@ -245,10 +327,10 @@ const subtitle = {
 };
 
 const card = {
-  background: "#fff",
+  background: "#f9fbfd",
   padding: "20px",
-  borderRadius: "14px",
-  boxShadow: "0 6px 18px rgba(0,0,0,0.06)"
+  borderRadius: "18px",
+  border: "1px solid #e2e8f0",
 };
 
 const textarea = {
@@ -268,17 +350,17 @@ const actions = {
 
 const btnSuccess = {
   flex: 1,
-  background: "#22c55e",
+  background: "#2f8f87",
   color: "#fff",
   border: "none",
   padding: "10px",
-  borderRadius: "8px",
+  borderRadius: "10px",
   cursor: "pointer"
 };
 
 const btnDanger = {
   flex: 1,
-  background: "#ef4444",
+  background: "#d32f2f",
   color: "#fff",
   border: "none",
   padding: "10px",

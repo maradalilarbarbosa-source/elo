@@ -1,10 +1,9 @@
 export const dynamic = "force-dynamic";
 
 import db from "@/lib/db";
-import Link from "next/link";
 import CampanhaCard from "@/components/CampanhaCard";
-
-
+import TopIconsCampanhas from "@/components/TopIconsCampanhas";
+import BotaoVoltarCampanhas from "@/components/BotaoVoltarCampanhas";
 
 
 export default async function PaginaCampanhas() {
@@ -46,11 +45,11 @@ export default async function PaginaCampanhas() {
             {/* LOGO */}
             <div
               style={{
-                width: "130%",
+                width: "90%",
                 display: "flex",
                 justifyContent: "center",
                 position: "absolute",
-                top: "-430px",
+                top: "-267px",
                 left: "50%",
                 transform: "translateX(-50%)",
                 zIndex: 1,
@@ -58,13 +57,14 @@ export default async function PaginaCampanhas() {
               }}
             >
               <img
-                src="/logoHero.png"
+                src="/logo-pequena.png"
                 alt="Topo Campanhas"
                 style={{
                   width: "115%",
                   maxWidth: "none",
                   height: "auto",
                   objectFit: "contain",
+                  opacity: 0.50,
                 }}
               />
             </div>
@@ -81,65 +81,30 @@ export default async function PaginaCampanhas() {
               <h1
                 style={{
                   margin: 0,
-                  fontSize: "36px",
+                  fontSize: "34px",
                   color: "#2fa4a0",
                   fontWeight: "400",
                   textAlign: "center",
-                  letterSpacing: "0.5px",
+                  letterSpacing: "0.9px",
                   textShadow: `
                     -1px -1px 0 #ffffff,
                     1px -1px 0 #ffffff,
                     -1px  1px 0 #ffffff,
                     1px  1px 0 #ffffff,
-                    0px  2px 6px rgba(0,0,0,0.15)
+                    0px  2px 6px rgba(0, 0, 0, 0.30)
                   `,
                 }}
               >
                 Campanhas Disponíveis
               </h1>
-
-              {/* ÍCONES */}
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "10px",
-                    right: "10px",
-                    display: "flex",
-                    gap: "14px",
-                  }}
-                >
-                  <Link href="/">
-                    <img
-                      src="/icon-home.png"
-                      alt="Home"
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                        cursor: "pointer",
-                        opacity: 0.85,
-                        transition: "all 0.2s ease",
-                      }}
-                    />
-                  </Link>
-
-                  <Link href="/login">
-                    <img
-                      src="/icon-user.png"
-                      alt="Login"
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                        cursor: "pointer",
-                        opacity: 0.85,
-                        transition: "all 0.2s ease",
-                      }}
-                    />
-                  </Link>
-              </div>
+              <TopIconsCampanhas />
             </div>
           </div>
 
+        <BotaoVoltarCampanhas />
+        
         {/* CONTEÚDO */}
+        
         {rows.length === 0 ? (
           <div
             style={{

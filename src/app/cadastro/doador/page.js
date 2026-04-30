@@ -136,24 +136,19 @@ export default function CadastroDoador() {
           style={rightDecoration}
         />
 
-        <div style={leftColumn}>
-          <h1 style={title}>
-            Cadastre-se como doador e
-            <br />
-            apoie causas com confiança
-          </h1>
-
-          <p style={subtitle}>
-            Crie sua conta para encontrar campanhas, apoiar instituições sérias
-            e acompanhar o impacto da sua contribuição na plataforma.
-          </p>
-        </div>
+        
 
         <div style={rightColumn}>
+
           <div style={card}>
-            <h2 style={cardTitle}>
-              Cadastre-se <span style={titleIcon}>👤</span>
-            </h2>
+            <div style={titleWrapper}>
+              <h2 style={cardTitle}>Cadastre-se</h2>
+              <img 
+                src="/icon-doador.png" 
+                alt="Cadastro de Doador" 
+                style={registerIcon}
+              />
+            </div>
 
             {erro && <div style={erroBox}>{erro}</div>}
 
@@ -272,6 +267,20 @@ export default function CadastroDoador() {
             </form>
           </div>
         </div>
+
+        <div style={leftColumn}>
+          <h1 style={title}>
+            Cadastre-se como doador e
+            <br />
+            apoie causas com confiança
+          </h1>
+
+          <p style={subtitle}>
+            Crie sua conta para encontrar campanhas, apoiar instituições sérias
+            e acompanhar o impacto da sua contribuição na plataforma.
+          </p>
+
+        </div>
       </div>
     </div>
   );
@@ -328,10 +337,10 @@ const topIcon = {
 
 const rightDecoration = {
   position: "absolute",
-  right: "-210px",
+  right: "-550px",
   top: "-50x",
   height: "700px",
-  opacity: 0.70,
+  opacity: 0.25,
   zIndex: 0,
   pointerEvents: "none",
 };
@@ -479,4 +488,15 @@ const sucessoBox = {
   padding: "12px",
   borderRadius: "12px",
   fontSize: "13px",
+};
+const titleWrapper = {
+  display: "flex",
+  alignItems: "center",
+  gap: "10px", // espaço entre texto e ícone
+};
+const registerIcon = {
+  width: "28px",
+  height: "28px",
+  objectFit: "contain",
+  opacity: 0.55,
 };

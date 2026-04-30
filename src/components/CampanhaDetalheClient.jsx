@@ -13,6 +13,12 @@ export default function CampanhaDetalheClient({ campanha }) {
   const [instituicaoUsuario, setInstituicaoUsuario] = useState(null);
   const [carregandoPerfil, setCarregandoPerfil] = useState(true);
 
+  const [carregouCliente, setCarregouCliente] = useState(false);
+
+    useEffect(() => {
+      setCarregouCliente(true);
+    }, []);
+
   const valorArrecadado = Number(campanha.valor_arrecadado || 0);
   const meta = Number(campanha.meta || 0);
   const progresso =
@@ -83,137 +89,144 @@ export default function CampanhaDetalheClient({ campanha }) {
   const podeDoar = !!usuarioAtual && !ehAdmin && !ehInstituicao;
 
   async function registrarDoacao() {
-    try {
-      const usuarioSalvo = localStorage.getItem("usuario");
+  try {
+    const usuarioSalvo = localStorage.getItem("usuario");
 
-      if (!usuarioSalvo) {
-        toast.error("Você precisa estar logado para doar.");
-        return;
-      }
-
-      const usuario = JSON.parse(usuarioSalvo);
-
-      if (usuario?.tipo === "ADM") {
-        toast.error("Administradores não podem realizar doações.");
-        return;
-      }
-
-      const responseInstituicao = await fetch("/api/minha-instituicao", {
-        headers: {
-          "user-id": String(usuario.id),
-        },
-      });
-
-      const dataInstituicao = await responseInstituicao.json();
-
-      if (responseInstituicao.ok && dataInstituicao?.id) {
-        toast.error("Instituições não podem realizar doações.");
-        return;
-      }
-
-      if (!valor || Number(valor) <= 0) {
-        toast.error("Informe um valor válido.");
-        return;
-      }
-
-      setEnviando(true);
-
-      const res = await fetch("/api/doacoes", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          usuario_id: usuario.id,
-          campanha_id: campanha.id,
-          valor: Number(valor),
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        toast.error(data.error || "Erro ao registrar doação.");
-        return;
-      }
-
-      toast.success("Doação registrada e aguardando validação.");
-      setValor("");
-      setMostrarDoacao(false);
-
-      setTimeout(() => {
-        router.push("/minhas-doacoes");
-      }, 1200);
-    } catch (error) {
-      console.error(error);
-      toast.error("Erro ao registrar doação.");
-    } finally {
-      setEnviando(false);
+    if (!usuarioSalvo) {
+      toast.error("Você precisa estar logado");
+      return;
     }
+
+    const usuario = JSON.parse(usuarioSalvo);
+
+    const valorNumerico = parseFloat(valor);
+
+    if (!valorNumerico || valorNumerico <= 0) {
+      toast.error("Digite um valor válido");
+      return;
+    }
+
+    setEnviando(true);
+
+    const response = await fetch("/api/doacoes", {
+      
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        usuario_id: usuario.id,
+        campanha_id: campanha.id,
+        valor: valorNumerico
+      }),
+    });
+
+    const data = await response.json();
+    console.log("Resposta da API:", data);
+
+    if (!response.ok) {
+  console.log("ERRO COMPLETO DA API:", data);
+  throw new Error(data.detalhe || data.error || data.message || "Erro ao registrar doação");
+}
+    
+    
+
+    toast.success("Doação enviada com sucesso!");
+    setValor("");
+
+  } catch (error) {
+    toast.error(error.message);
+  } finally {
+    setEnviando(false);
   }
+}
 
   return (
     <div
-      style={{
-        minHeight: "100vh",
-        background: "#f5f7fb",
-        padding: "40px 20px",
-      }}
-    >
+  style={{
+    minHeight: "100vh",
+    background: "#f5f7fb",
+    padding: "55px 20px",
+    position: "relative",
+    overflow: "hidden",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  }}
+>
+  {/* FUNDO DECORATIVO ESQUERDO */}
+<img
+  src="/elos-verticais-esquerda.png"
+  alt="Elementos decorativos esquerda"
+  style={{
+    position: "absolute",
+    left: "-400px",
+    top: "10px",
+    height: "650px",
+    opacity: 0.25,
+    zIndex: 0,
+    pointerEvents: "none",
+  }}
+/>
+
+<img
+  src="/elos-verticais.png"
+  alt="Elementos decorativos direita"
+  style={{
+    position: "absolute",
+    right: "-400px",
+    top: "10px",
+    height: "650px",
+    opacity: 0.25,
+    zIndex: 0,
+    pointerEvents: "none",
+  }}
+/>
+
+
       <div
         style={{
-          maxWidth: "960px",
+          maxWidth: "1120px",  
           margin: "0 auto",
+          position: "relative",
+          zIndex: 1,
         }}
       >
-        <button
-          onClick={() => router.push("/campanhas")}
-          style={{
-            background: "#fff",
-            color: "#1976d2",
-            border: "1px solid #1976d2",
-            padding: "10px 16px",
-            borderRadius: "8px",
-            cursor: "pointer",
-            fontWeight: "bold",
-            marginBottom: "20px",
-          }}
-        >
-          ← Voltar para campanhas
-        </button>
+        {carregouCliente && (
+  <button
+    onClick={() => {
+      if (podeDoar) {
+        router.push("/");
+        return;
+      }
+
+      router.push("/campanhas");
+    }}
+    style={{
+      background: "#fff",
+      color: "#2f8f87",
+      border: "1px solid #2f8f87",
+      padding: "10px 16px",
+      borderRadius: "8px",
+      cursor: "pointer",
+      fontWeight: "bold",
+      marginBottom: "20px",
+    }}
+  >
+    {podeDoar ? "← Voltar para minhas doações" : "← Voltar para campanhas"}
+  </button>
+)}
 
         <div
           style={{
             background: "#fff",
-            borderRadius: "18px",
+            borderRadius: "28px",
             overflow: "hidden",
-            boxShadow: "0 10px 28px rgba(0,0,0,0.08)",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+            position: "relative",
+            zIndex: 1,
           }}
         >
-          <div
-            style={{
-              height: "280px",
-              background: campanha.imagem_url
-                ? `url(${campanha.imagem_url}) center/cover no-repeat`
-                : "linear-gradient(135deg, #1976d2 0%, #42a5f5 100%)",
-              display: "flex",
-              alignItems: "end",
-              padding: "30px",
-            }}
-          >
-            <div
-              style={{
-                background: "rgba(255,255,255,0.15)",
-                backdropFilter: "blur(4px)",
-                padding: "10px 14px",
-                borderRadius: "999px",
-                color: "#fff",
-                fontWeight: "bold",
-              }}
-            >
-              Campanha solidária
-            </div>
-          </div>
 
           <div
             style={{
@@ -229,7 +242,9 @@ export default function CampanhaDetalheClient({ campanha }) {
                   marginTop: 0,
                   marginBottom: "12px",
                   fontSize: "34px",
-                  color: "#1f2937",
+                  color: "#2f8f87",
+                  textAlign:"center",
+                  fontWeight:"bold",
                 }}
               >
                 {campanha.titulo}
@@ -237,9 +252,12 @@ export default function CampanhaDetalheClient({ campanha }) {
 
               <p
                 style={{
+                  background:"#2f8f874e",
+                  borderRadius:"90px",
                   color: "#666",
                   marginBottom: "18px",
-                  fontSize: "15px",
+                  fontSize: "18px",
+                  textAlign:"center",
                 }}
               >
                 <strong>Instituição:</strong>{" "}
@@ -254,6 +272,7 @@ export default function CampanhaDetalheClient({ campanha }) {
                   marginBottom: "24px",
                 }}
               >
+                <strong>Descrição: </strong>{" "}
                 {campanha.descricao}
               </p>
 
@@ -296,7 +315,7 @@ export default function CampanhaDetalheClient({ campanha }) {
                     style={{
                       width: `${progresso}%`,
                       height: "100%",
-                      background: "#22c55e",
+                      background: "#2f8f87",
                     }}
                   />
                 </div>
@@ -328,7 +347,7 @@ export default function CampanhaDetalheClient({ campanha }) {
                       marginTop: 0,
                       marginBottom: "10px",
                       fontSize: "22px",
-                      color: "#1f2937",
+                      color: "#2f8f87",
                     }}
                   >
                     Verificando acesso
@@ -398,24 +417,23 @@ export default function CampanhaDetalheClient({ campanha }) {
                     <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
                       <input
                         type="number"
+                        step="0.01"
+                        min="0"
                         placeholder="Digite o valor da doação"
                         value={valor}
                         onChange={(e) => setValor(e.target.value)}
                         style={{
                           width: "100%",
-                          padding: "14px 16px",
-                          borderRadius: "10px",
-                          border: "1px solid #d0d7de",
-                          fontSize: "16px",
-                          outline: "none",
-                          boxSizing: "border-box",
+                          padding: "12px",
+                          borderRadius: "8px",
+                          border: "1px solid #ccc"
                         }}
                       />
 
                       <div
                         style={{
                           background: "#eff6ff",
-                          color: "#1d4ed8",
+                          color: "#2f8f87",
                           border: "1px solid #bfdbfe",
                           padding: "12px",
                           borderRadius: "10px",
@@ -423,7 +441,7 @@ export default function CampanhaDetalheClient({ campanha }) {
                           lineHeight: "1.5",
                         }}
                       >
-                        Após o envio, a doação ficará com status <strong>em análise</strong>
+                        Após o envio, a doação ficará com status <strong>em análise </strong>
                         até ser validada pela instituição.
                       </div>
 
@@ -432,7 +450,7 @@ export default function CampanhaDetalheClient({ campanha }) {
                         disabled={enviando}
                         style={{
                           width: "100%",
-                          background: "#1976d2",
+                          background: "#2f8f87",
                           color: "#fff",
                           padding: "14px",
                           borderRadius: "10px",
@@ -471,10 +489,11 @@ export default function CampanhaDetalheClient({ campanha }) {
               ) : ehVisitante ? (
                 <div
                   style={{
-                    background: "#eff6ff",
-                    border: "1px solid #bfdbfe",
+                    background: "#daf6f4",
+                    border: "1px solid #b7e0dd",
                     borderRadius: "16px",
                     padding: "24px",
+                    
                   }}
                 >
                   <h2
@@ -482,7 +501,7 @@ export default function CampanhaDetalheClient({ campanha }) {
                       marginTop: 0,
                       marginBottom: "10px",
                       fontSize: "22px",
-                      color: "#1d4ed8",
+                      color: "#2f8f87",
                     }}
                   >
                     Entre para fazer uma doação
@@ -491,7 +510,7 @@ export default function CampanhaDetalheClient({ campanha }) {
                   <p
                     style={{
                       margin: "0 0 18px 0",
-                      color: "#1e3a8a",
+                      color: "#555",
                       lineHeight: "1.7",
                       fontSize: "15px",
                     }}
@@ -505,7 +524,7 @@ export default function CampanhaDetalheClient({ campanha }) {
                       onClick={() => router.push("/login")}
                       style={{
                         width: "100%",
-                        background: "#1976d2",
+                        background: "#2f8f87",
                         color: "#fff",
                         padding: "14px",
                         borderRadius: "10px",
@@ -523,10 +542,10 @@ export default function CampanhaDetalheClient({ campanha }) {
                       style={{
                         width: "100%",
                         background: "#fff",
-                        color: "#1976d2",
+                        color: "#2f8f87",
                         padding: "12px",
                         borderRadius: "10px",
-                        border: "1px solid #93c5fd",
+                        border: "1px solid #b8d2cd",
                         fontSize: "15px",
                         fontWeight: "bold",
                         cursor: "pointer",

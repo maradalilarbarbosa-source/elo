@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getCampanhas, deleteCampanha } from "@/services/campanhaService";
-import CampanhaCard from "@/components/CampanhaCard";
+//import CampanhaCard from "@/components/CampanhaCard";
 import { toast } from "react-toastify";
 import ModalConfirmacao from "@/components/ModalConfirmacao";
 import Navbar from "@/components/Navbar";
@@ -11,12 +11,22 @@ import Navbar from "@/components/Navbar";
 export default function Home() {
   const [campanhas, setCampanhas] = useState([]);
   const [campanhasDoadas, setCampanhasDoadas] = useState([]);
-  const [deletandoId, setDeletandoId] = useState(null);
+  //const [deletandoId, setDeletandoId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [campanhaParaExcluir, setCampanhaParaExcluir] = useState(null);
   const [usuario, setUsuario] = useState(null);
   const [instituicao, setInstituicao] = useState(null);
   const [animarHero, setAnimarHero] = useState(false);
+  const [usuarioLogado, setUsuarioLogado] = useState(null);
+
+    useEffect(() => {
+      const usuarioSalvo = localStorage.getItem("usuario");
+
+      if (usuarioSalvo) {
+        setUsuarioLogado(JSON.parse(usuarioSalvo));
+      }
+    }, []);
+    
   const estaLogado = !!usuario;
 
     useEffect(() => {
@@ -244,7 +254,11 @@ export default function Home() {
           gap: "18px",
         }}
       >
+
+        {!usuarioLogado && (
+      <>
       {/* HOME */}
+      
       <img
         src="/icon-home.png"
         alt="Home"
@@ -287,7 +301,11 @@ export default function Home() {
         transition: "all 0.2s ease",
       }}
     />
+    </>
+)}
       </div>
+      
+      
 
     {/* LOGO SUPERIOR GRANDE */}
     
@@ -312,6 +330,8 @@ export default function Home() {
           maxWidth: "95%",
           height: "auto",
           objectFit: "contain",
+          opacity: 0.75,
+          filter: "drop-shadow(0 5px 5px rgba(0, 0, 0, 0.11))"
         }}
       />
     </div>
@@ -468,170 +488,109 @@ export default function Home() {
 )}
 
       
-      {estaLogado && (      
-      <div
-        style={{
-          padding: "40px",
-          maxWidth: "900px",
-          margin: "0 auto",
-        }}
-       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "30px",
-            paddingBottom: "20px",
-            borderBottom: "1px solid #e5e7eb",
-            flexWrap: "wrap",
-            gap: "20px",
-          }}
-        >
-          
+      {estaLogado && (
+  <div
+    style={{
+      position: "relative",
+      padding: "40px",
+      maxWidth: "1120px",
+      margin: "0 auto",
+      overflow: "visible",
+    }}
+  >
+    <img
+      src="/elos-verticais-esquerda.png"
+      alt=""
+      style={{
+        position: "absolute",
+        left: "-650px",
+        top: "20px",
+        height: "650px",
+        opacity: 0.15,
+        zIndex: 0,
+        pointerEvents: "none",
+      }}
+    />
 
-        <div>
-          <p
-            style={{
-              margin: "0 0 8px 0",
-              fontSize: "14px",
-              color: "#1976d2",
-              fontWeight: "bold",
-              textTransform: "uppercase",
-              letterSpacing: "0.5px",
-            }}
-          >
-            {ehAdmin ? "Área administrativa" : "Plataforma ELO"}
-          </p>
+    <img
+      src="/elos-verticais.png"
+      alt=""
+      style={{
+        position: "absolute",
+        right: "-650px",
+        top: "20px",
+        height: "650px",
+        opacity: 0.15,
+        zIndex: 0,
+        pointerEvents: "none",
+      }}
+    />
 
-          <h2
-            style={{
-              margin: "0 0 8px 0",
-              color: "#1f2937",
-              fontSize: "32px",
-            }}
-          >
-            {ehAdmin ? "Painel administrativo" : `👋 Olá, ${usuario?.nome}`}
-          </h2>
+    <div style={{ position: "relative", zIndex: 1 }}>
+  {ehAdmin && (
+    <div style={{ textAlign: "center", marginBottom: "30px", paddingBottom: "20px", borderBottom: "1px solid #e5e7eb" }}>
+      <p style={{ margin: "0 0 8px 0", fontSize: "20px", color: "#2f8f87", fontWeight: "bold", textTransform: "uppercase" }}>
+        Área administrativa
+      </p>
 
-          <p
-            style={{
-              color: "#666",
-              margin: 0,
-              maxWidth: "680px",
-              lineHeight: "1.6",
-            }}
-          >
-            {ehAdmin
-              ? "Acompanhe as instituições cadastradas, acesse a área de aprovação e visualize as campanhas ativas publicadas na plataforma."
-              : ehInstituicao
-              ? "Gerencie as campanhas da sua instituição"
-              : "Acompanhe suas doações e explore campanhas ativas"}
-          </p>
-        </div>
+      <p style={{ color: "#666", margin: "0 auto", maxWidth: "680px", lineHeight: "1.6", fontSize: "12px" }}>
+        Acompanhe as instituições cadastradas, acesse a área de aprovação e visualize as campanhas ativas.
+      </p>
+    </div>
+  )}
 
+  {ehInstituicao && (
+    <div
+    style={{
+      marginBottom: "30px",
+      paddingBottom: "20px",
+      borderBottom: "1px solid #e5e7eb",
+    }}
+>
+      
 
-                  <div
-        style={{
-          display: "flex",
-          gap: "10px",
-          alignItems: "center",
-          flexWrap: "wrap",
-        }}
-          >
-            {ehAdmin ? (
-              <button
-                onClick={() => router.push("/admin")}
-                style={{
-                  background: "#1976d2",
-                  color: "#fff",
-                  border: "none",
-                  padding: "12px 20px",
-                  borderRadius: "8px",
-                  fontWeight: "bold",
-                  cursor: "pointer",
-                }}
-              >
-                Gerenciar instituições
-              </button>
-            ) : (
-              <>
-                <button
-                  onClick={() => router.push("/campanhas")}
-                  style={{
-                    background: "#fff",
-                    color: "#1976d2",
-                    border: "1px solid #1976d2",
-                    padding: "12px 20px",
-                    borderRadius: "8px",
-                    fontWeight: "bold",
-                    cursor: "pointer",
-                  }}
-                >
-                  Ver campanhas ativas
-                </button>
+      <h2 style={{  margin: "0 0 8px 0", color: "#2f8f87", fontSize: "40px", textAlign: "center",fontWeight: "bold", }}>
+        Olá, {usuario?.nome}
+      </h2>
 
-                {ehInstituicao ? (
-                  instituicaoAprovada ? (
-                    <button
-                      onClick={() => router.push("/nova-campanha")}
-                      style={{
-                        background: "#1976d2",
-                        color: "#fff",
-                        border: "none",
-                        padding: "12px 20px",
-                        borderRadius: "8px",
-                        fontWeight: "bold",
-                        cursor: "pointer",
-                      }}
-                    >
-                      + Nova Campanha
-                    </button>
-                  ) : (
-                    <div
-                      style={{
-                        background: "#fff1f2",
-                        border: "1px solid #fecdd3",
-                        color: "#9f1239",
-                        padding: "14px 16px",
-                        borderRadius: "10px",
-                        maxWidth: "420px",
-                        fontSize: "14px",
-                        lineHeight: "1.5",
-                      }}
-                    >
-                      <strong style={{ display: "block", marginBottom: "6px" }}>
-                        Sua instituição ainda não foi aprovada
-                      </strong>
+      <p style={{background: "#2f8f872f", borderRadius: "50px", margin: "0 0 8px 0", fontSize: "30px", color: "#545555ec", textAlign: "center" }}>
+        Minhas Campanhas
+      </p>
 
-                      <span>
-                        O cadastro passa por análise do administrador como medida de segurança
-                        para os doadores e para evitar fraudes. Após a aprovação, sua instituição
-                        poderá criar campanhas normalmente. Até lá, aguarde a conclusão da análise.
-                      </span>
-                    </div>
-                  )
-                ) : (
-                  <button
-                    onClick={() => router.push("/minhas-doacoes")}
-                    style={{
-                      background: "#1976d2",
-                      color: "#fff",
-                      border: "none",
-                      padding: "12px 20px",
-                      borderRadius: "8px",
-                      fontWeight: "bold",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Minhas doações
-                  </button>
-                )}
-              </>
-            )}
-          </div>
-          
-        </div>
+      <p style={{ color: "#666", margin: "0 auto 18px auto", maxWidth: "680px", lineHeight: "1.6", fontSize: "14px", textAlign: "center" }}>
+        Gerencie As Campanhas Da Sua Instituição
+      </p>
+
+      {instituicaoAprovada ? (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "flex-end",
+      width: "100%",
+    }}
+  >
+  </div>
+) : (
+  <div
+    style={{
+      background: "#fff1f2",
+      border: "1px solid #fecdd3",
+      color: "#9f1239",
+      padding: "14px 16px",
+      borderRadius: "10px",
+      maxWidth: "520px",
+      margin: "0 auto",
+      fontSize: "14px",
+    }}
+  >
+    <strong>Sua instituição ainda não foi aprovada</strong>
+  </div>
+)}
+</div>
+  )}
+
+</div>
+
 
         {loading && (ehInstituicao || ehAdmin) && (
           <div style={{ textAlign: "center", marginTop: "50px" }}>
@@ -640,7 +599,7 @@ export default function Home() {
                 width: "40px",
                 height: "40px",
                 border: "4px solid #ccc",
-                borderTop: "4px solid #1976d2",
+                borderTop: "4px solid #2f8f87",
                 borderRadius: "50%",
                 margin: "0 auto",
                 animation: "spin 1s linear infinite",
@@ -685,7 +644,7 @@ export default function Home() {
               <button
                 onClick={() => router.push("/nova-campanha")}
                 style={{
-                  background: "#1976d2",
+                  background: "#2f8f87",
                   color: "#fff",
                   border: "none",
                   padding: "12px 20px",
@@ -700,31 +659,163 @@ export default function Home() {
           </div>
         )}
 
-        {!loading && ehInstituicao && (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "16px",
-            }}
-          >
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+        gap: "16px",
+      }}
+    >
+            {instituicaoAprovada && (
+  <div
+    onClick={() => router.push("/nova-campanha")}
+    style={{
+      background: "#fff",
+      border: "1px dashed #b8d2cd",
+      borderRadius: "18px",
+      padding: "16px",
+      minHeight: "210px",
+      boxShadow: "0 6px 16px rgba(0,0,0,0.05)",
+      cursor: "pointer",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "10px",
+      transition: "all 0.2s ease",
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.transform = "translateY(-4px)";
+      e.currentTarget.style.boxShadow = "0 10px 22px rgba(0,0,0,0.10)";
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.transform = "translateY(0)";
+      e.currentTarget.style.boxShadow = "0 6px 16px rgba(0,0,0,0.05)";
+    }}
+  >
+    <img
+      src="/logo-pequena.png"
+      alt="Nova campanha"
+      style={{
+        width: "200px",
+        height: "200px",
+        objectFit: "contain",
+      }}
+    />
+
+    <span
+      style={{
+        fontSize: "20px",
+        fontWeight: "700",
+        color: "#2f8f87",
+      }}
+    >
+      Nova Campanha
+    </span>
+  </div>
+)}
             {campanhas.map((campanha) => {
-              const podeGerenciar =
-                instituicaoAprovada &&
-                Number(campanha.instituicao_id) === Number(instituicao.id);
+              const valorArrecadado = Number(campanha.valor_arrecadado || 0);
+              const meta = Number(campanha.meta || 0);
+              const progresso =
+                meta > 0 ? Math.min((valorArrecadado / meta) * 100, 100) : 0;
 
               return (
-                <CampanhaCard
+                <div
                   key={campanha.id}
-                  campanha={campanha}
-                  onDelete={abrirModal}
-                  deletando={deletandoId === campanha.id}
-                  podeGerenciar={podeGerenciar}
-                />
+                  onClick={() => router.push(`/campanhas/${campanha.id}/gerenciar`)}
+                  style={{
+                    background: "#fff",
+                    border: "1px solid #e2e8f0",
+                    borderRadius: "18px",
+                    padding: "16px",
+                    boxShadow: "0 6px 16px rgba(0,0,0,0.05)",
+                    cursor: "pointer",
+                  }}
+                >
+                  <div
+                    style={{
+                      height: "70px",
+                      borderRadius: "14px",
+                      background: "linear-gradient(135deg, #72d5c5, #3aa6cf)",
+                      marginBottom: "14px",
+                    }}
+                  />
+
+                  <h4 style={{ margin: "0 0 8px 0", fontSize: "16px" }}>
+                    {campanha.titulo}
+                  </h4>
+
+                  <p style={{ margin: "0 0 12px 0", color: "#666", fontSize: "13px" }}>
+                    {campanha.descricao}
+                  </p>
+
+                  <div
+                    style={{
+                      height: "8px",
+                      background: "#e5e7eb",
+                      borderRadius: "999px",
+                      overflow: "hidden",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: `${progresso}%`,
+                        height: "100%",
+                        background: "#2f8f87",
+                      }}
+                    />
+                  </div>
+
+                  <p style={{ margin: "0 0 14px 0", fontSize: "12px", color: "#555" }}>
+                    R$ {valorArrecadado.toFixed(2)} de R$ {meta.toFixed(2)}
+                  </p>
+
+                  <div style={{ display: "flex", gap: "10px" }}>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        router.push(`/campanhas/${campanha.id}/editar`);
+                      }}
+                      style={{
+                        flex: 1,
+                        background: "#2f8f87",
+                        color: "#fff",
+                        border: "none",
+                        padding: "10px",
+                        borderRadius: "999px",
+                        fontWeight: "bold",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Editar
+                    </button>
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        abrirModal(campanha);
+                      }}
+                      style={{
+                        flex: 1,
+                        background: "#d32f2f",
+                        color: "#fff",
+                        border: "none",
+                        padding: "10px",
+                        borderRadius: "999px",
+                        fontWeight: "bold",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Excluir
+                    </button>
+                  </div>
+                </div>
               );
             })}
           </div>
-        )}
+          
 
         
         {!loading && ehAdmin && (
@@ -737,100 +828,49 @@ export default function Home() {
             >
               <div
                 style={{
-                  background: "linear-gradient(135deg, #eef4ff 0%, #f8fbff 100%)",
-                  border: "1px solid #dbe7ff",
-                  borderRadius: "16px",
-                  padding: "24px",
-                  boxShadow: "0 6px 18px rgba(25, 118, 210, 0.08)",
+                  display: "flex",
+                  //justifyContent: "flex-start",
+                  justifyContent: "center",
+                  marginTop: "20px",
                 }}
               >
                 <div
                   style={{
+                    width: "120px",
+                    height: "120px",
+                    background: "#ffffff",
+                    border: "2px solid #b8d2cd",
+                    borderRadius: "50%",
                     display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "flex-start",
-                    gap: "16px",
-                    flexWrap: "wrap",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    boxShadow: "0 6px 18px rgba(0,0,0,0.08)",
                   }}
                 >
-                  <div>
-                    <p
-                      style={{
-                        margin: "0 0 8px 0",
-                        color: "#1976d2",
-                        fontSize: "13px",
-                        fontWeight: "bold",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.5px",
-                      }}
-                    >
-                      Monitoramento da plataforma
-                    </p>
-
-                    <h3
-                      style={{
-                        margin: "0 0 10px 0",
-                        color: "#1f2937",
-                        fontSize: "26px",
-                      }}
-                    >
-                      Campanhas ativas das instituições aprovadas
-                    </h3>
-
-                    <p
-                      style={{
-                        margin: 0,
-                        color: "#5f6b7a",
-                        lineHeight: "1.6",
-                        maxWidth: "700px",
-                      }}
-                    >
-                      Aqui você acompanha as campanhas que estão publicadas na plataforma.
-                      Essa visualização ajuda no controle geral do sistema, sem acessar o fluxo de doação.
-                    </p>
-                  </div>
-
-                  <div
+                  <p
                     style={{
-                      minWidth: "170px",
-                      background: "#ffffff",
-                      border: "1px solid #dbe7ff",
-                      borderRadius: "14px",
-                      padding: "16px",
-                      boxShadow: "0 4px 12px rgba(0,0,0,0.04)",
+                      margin: "2px 0 0 0",
+                      fontSize: "10px",
+                      color: "#667085",
+                      textAlign: "center",
                     }}
                   >
-                    <p
-                      style={{
-                        margin: "0 0 6px 0",
-                        fontSize: "13px",
-                        color: "#667085",
-                        fontWeight: "600",
-                      }}
-                    >
-                      Total exibido
-                    </p>
+                    Campanhas Ativas
+                  </p>
+                  <h4
+                    style={{
+                      margin: 0,
+                      fontSize: "26px",
+                      fontWeight: "700",
+                      color: "#2f8f87",
+                      textAlign: "center",
+                    }}
+                  >
+                    {campanhas.length}
+                  </h4>
 
-                    <h4
-                      style={{
-                        margin: 0,
-                        fontSize: "30px",
-                        color: "#1976d2",
-                      }}
-                    >
-                      {campanhas.length}
-                    </h4>
-
-                    <p
-                      style={{
-                        margin: "6px 0 0 0",
-                        fontSize: "13px",
-                        color: "#667085",
-                      }}
-                    >
-                      campanhas ativas
-                    </p>
-                  </div>
+                  
                 </div>
               </div>
 
@@ -867,7 +907,7 @@ export default function Home() {
                   <button
                     onClick={() => router.push("/admin")}
                     style={{
-                      background: "#1976d2",
+                      background: "#2f8f87",
                       color: "#fff",
                       border: "none",
                       padding: "12px 20px",
@@ -896,42 +936,92 @@ export default function Home() {
                       gap: "12px",
                     }}
                   >
-                    <h4
-                      style={{
-                        margin: 0,
-                        color: "#1f2937",
-                        fontSize: "20px",
-                      }}
-                    >
-                      Lista de campanhas monitoradas
-                    </h4>
-
-                    <span
-                      style={{
-                        background: "#eef2ff",
-                        color: "#4338ca",
-                        border: "1px solid #c7d2fe",
-                        padding: "8px 12px",
-                        borderRadius: "999px",
-                        fontSize: "13px",
-                        fontWeight: "600",
-                      }}
-                    >
-                      Visualização administrativa
-                    </span>
                   </div>
 
-                  <div style={{ display: "flex", flexDirection: "column", gap: "16px", }}>
-                    {campanhas.map((campanha) => (
-                      <CampanhaCard
-                        key={campanha.id}
-                        campanha={campanha}
-                        podeGerenciar={false}
-                        deletando={false}
-                        desabilitarClique={true}
-                      />
-                    ))}
-                  </div>
+                  <div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+    gap: "16px",
+  }}
+>
+  {campanhas.map((campanha) => {
+    const valorArrecadado = Number(campanha.valor_arrecadado || 0);
+    const meta = Number(campanha.meta || 0);
+    const progresso =
+      meta > 0 ? Math.min((valorArrecadado / meta) * 100, 100) : 0;
+
+    return (
+      <div
+        key={campanha.id}
+        style={{
+          background: "#fff",
+          border: "1px solid #e2e8f0",
+          borderRadius: "18px",
+          padding: "16px",
+          boxShadow: "0 6px 16px rgba(0,0,0,0.05)",
+        }}
+      >
+        <div
+          style={{
+            height: "54px",
+            borderRadius: "14px",
+            background: "linear-gradient(135deg, #72d5c5, #3aa6cf)",
+            marginBottom: "14px",
+          }}
+        />
+
+        <h4
+          style={{
+            margin: "0 0 6px 0",
+            fontSize: "16px",
+            color: "#1f2937",
+          }}
+        >
+          {campanha.titulo}
+        </h4>
+
+        <p
+          style={{
+            margin: "0 0 10px 0",
+            fontSize: "13px",
+            color: "#666",
+          }}
+        >
+          {campanha.instituicao_nome || "Instituição não informada"}
+        </p>
+
+        <div
+          style={{
+            height: "8px",
+            background: "#e5e7eb",
+            borderRadius: "999px",
+            overflow: "hidden",
+            marginBottom: "8px",
+          }}
+        >
+          <div
+            style={{
+              width: `${progresso}%`,
+              height: "100%",
+              background: "#2f8f87",
+            }}
+          />
+        </div>
+
+        <p
+          style={{
+            margin: 0,
+            fontSize: "12px",
+            color: "#555",
+          }}
+        >
+          R$ {valorArrecadado.toFixed(2)} de R$ {meta.toFixed(2)}
+        </p>
+      </div>
+    );
+  })}
+</div>
                 </div>
               )}
             </div>
@@ -939,65 +1029,149 @@ export default function Home() {
 
 
         {!loading && ehDoador && (
-          <div
-            style={{
-              background: "#f8f9fa",
-              border: "1px solid #e0e0e0",
-              borderRadius: "12px",
-              padding: "24px",
-              color: "#555",
-            }}
-          >
-            <h3 style={{ marginBottom: "10px", color: "#333" }}>
-              Campanhas que você apoiou
-            </h3>
+  <div>
+    <div
+      style={{
+        textAlign: "center",
+        marginBottom: "34px",
+      }}
+    >
+      <h2
+        style={{
+          margin: "0 0 12px 0",
+          fontSize: "46px",
+          color: "#2f8f87",
+          fontWeight: "700",
+        }}
+      >
+        Olá, {usuario?.nome}
+      </h2>
 
-            <p style={{ marginBottom: "18px" }}>
-              Aqui estão as campanhas para as quais você já realizou doações.
-            </p>
+      <div
+        style={{
+          background: "rgba(184, 210, 205, 0.45)",
+          padding: "8px 20px",
+          borderRadius: "999px",
+          margin: "0 auto 14px auto",
+          maxWidth: "720px",
+        }}
+      >
+        <h3
+          style={{
+            margin: 0,
+            fontSize: "30px",
+            color: "#555",
+            fontWeight: "500",
+          }}
+        >
+          Causas Apoiadas
+        </h3>
+      </div>
+    </div>
 
-            {campanhasDoadas.length === 0 ? (
+    {campanhasDoadas.length === 0 ? (
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: "18px",
+          padding: "24px",
+          border: "1px solid #e2e8f0",
+          textAlign: "center",
+          color: "#555",
+        }}
+      >
+        Você ainda não apoiou nenhuma coisa, doe agora!
+      </div>
+    ) : (
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+          gap: "16px",
+        }}
+      >
+        {campanhasDoadas.map((campanha) => {
+          const valorArrecadado = Number(campanha.valor_arrecadado || 0);
+          const meta = Number(campanha.meta || 0);
+          const progresso =
+            meta > 0 ? Math.min((valorArrecadado / meta) * 100, 100) : 0;
+
+          return (
+            <div
+              key={campanha.id}
+              onClick={() => router.push(`/campanhas/${campanha.id}`)}
+              style={{
+                background: "#fff",
+                border: "1px solid #e2e8f0",
+                borderRadius: "18px",
+                padding: "16px",
+                boxShadow: "0 6px 16px rgba(0,0,0,0.05)",
+                cursor: "pointer",
+              }}
+            >
               <div
                 style={{
-                  background: "#fff",
-                  borderRadius: "10px",
-                  padding: "20px",
-                  border: "1px solid #e0e0e0",
+                  height: "70px",
+                  borderRadius: "14px",
+                  background: "linear-gradient(135deg, #72d5c5, #3aa6cf)",
+                  marginBottom: "14px",
+                }}
+              />
+
+              <h4
+                style={{
+                  margin: "0 0 8px 0",
+                  fontSize: "16px",
+                  color: "#1f2937",
                 }}
               >
-                <p style={{ marginBottom: "16px" }}>
-                  Você ainda não realizou nenhuma doação.
-                </p>
+                {campanha.titulo}
+              </h4>
 
-                <button
-                  onClick={() => router.push("/campanhas")}
+              <p
+                style={{
+                  margin: "0 0 12px 0",
+                  color: "#666",
+                  fontSize: "13px",
+                }}
+              >
+                {campanha.descricao}
+              </p>
+
+              <div
+                style={{
+                  height: "8px",
+                  background: "#e5e7eb",
+                  borderRadius: "999px",
+                  overflow: "hidden",
+                  marginBottom: "8px",
+                }}
+              >
+                <div
                   style={{
-                    background: "#1976d2",
-                    color: "#fff",
-                    border: "none",
-                    padding: "12px 20px",
-                    borderRadius: "8px",
-                    fontWeight: "bold",
-                    cursor: "pointer",
+                    width: `${progresso}%`,
+                    height: "100%",
+                    background: "#2f8f87",
                   }}
-                >
-                  Ver campanhas ativas
-                </button>
+                />
               </div>
-            ) : (
-              <div style={{ display: "flex", flexDirection: "column", gap: "16px", }}>
-                {campanhasDoadas.map((campanha) => (
-                  <CampanhaCard
-                    key={campanha.id}
-                    campanha={campanha}
-                    podeGerenciar={false}
-                    deletando={false}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        )}
+
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: "12px",
+                  color: "#555",
+                }}
+              >
+                R$ {valorArrecadado.toFixed(2)} de R$ {meta.toFixed(2)}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+    )}
+  </div>
+)}
 
         <ModalConfirmacao
           campanha={campanhaParaExcluir}
@@ -1006,6 +1180,6 @@ export default function Home() {
         />
       </div>
     )}
-  </div> 
+  </div>
   );
 }

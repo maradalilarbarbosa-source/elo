@@ -6,21 +6,23 @@ export async function POST(req) {
     const body = await req.json();
 
     const { usuario_id, campanha_id, valor } = body;
+    const valorNumerico = parseFloat(valor);
+    
 
     // validações básicas
-    if (!usuario_id || !campanha_id || !valor) {
-      return Response.json(
-        { error: "Campos obrigatórios não enviados" },
-        { status: 400 }
-      );
-    }
+    if (!usuario_id || !campanha_id || !valorNumerico || valorNumerico <= 0) {
+  return Response.json(
+    { error: "Campos obrigatórios inválidos" },
+    { status: 400 }
+  );
+}
 
     await db.query(
       `
       INSERT INTO doacoes (usuario_id, campanha_id, valor, status)
       VALUES (?, ?, ?, 'pendente')
       `,
-      [usuario_id, campanha_id, valor]
+      [usuario_id, campanha_id, valorNumerico]
     );
 
     return Response.json({
@@ -28,11 +30,15 @@ export async function POST(req) {
       message: "Doação registrada com sucesso e aguardando validação da instituição."
     });
   } catch (error) {
+
     console.error("Erro ao registrar doação:", error);
 
     return Response.json(
-      { error: "Erro ao registrar doação" },
+      {
+        error: "Erro ao registrar doação",
+        detalhe: error.message,
+      },
       { status: 500 }
     );
-  }
-}
+      }
+    }

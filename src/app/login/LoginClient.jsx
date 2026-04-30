@@ -54,8 +54,8 @@ export default function Login() {
   <div style={pageWrapper}>
     <div style={contentArea}>
       <div style={topBar}>
-        <img src="/logo-pequena.png" alt="Logo Elo" style={brandLogo} />
-
+        <div />
+  
         <div style={topIcons}>
           <img
             src="/icon-home.png"
@@ -78,6 +78,7 @@ export default function Login() {
       />
 
       <div style={leftColumn}>
+        <img src="/logo-pequena.png" alt="Logo Elo" style={leftLogo} />
         <h1 style={title}>
           Conecte doadores e
           <br />
@@ -100,7 +101,6 @@ export default function Login() {
       <div style={rightColumn}>
         <div style={card}>
           <h2 style={cardTitle}>Faça seu Login</h2>
-
           <img src="/logo-pequena.png" alt="Logo Elo" style={cardLogo} />
 
           {mensagemLogout && <div style={sucessoBox}>{mensagemLogout}</div>}
@@ -165,7 +165,7 @@ export default function Login() {
               title="Cadastro de doador"
             >
               <img
-                src="/icon-user.png"
+                src="/icon-doador.png"
                 alt="Cadastro de doador"
                 style={registerIcon}
               />
@@ -177,7 +177,11 @@ export default function Login() {
               style={iconButton}
               title="Cadastro de instituição"
             >
-              <span style={institutionIcon}>🏛️</span>
+              <img
+                src="/icon-insti.png"
+                alt="Cadastro de Instituição"
+                style={registerIcon}
+              />
             </button>
           </div>
         </div>
@@ -188,13 +192,14 @@ export default function Login() {
 }
 
 const pageWrapper = {
-  minHeight: "100vh",
+  height: "100vh",
   background: "#ffffff",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  padding: "32px 40px",
+  padding: "20px 40px",
   boxSizing: "border-box",
+  overflow: "hidden",
 };
 
 const contentArea = {
@@ -211,6 +216,7 @@ const contentArea = {
 const topIcons = {
   display: "flex",
   gap: "16px",
+  marginTop: "20px",
 };
 
 const topIcon = {
@@ -222,10 +228,10 @@ const topIcon = {
 
 const rightDecoration = {
   position: "absolute",
-  right: "-210px", // joga pra fora da tela
-  top: "-50px",
-  height: "700px", // aumenta bastante
-  opacity: 0.70,
+  right: "-600px", // joga pra fora da tela
+  top: "-20px",
+  height: "750px", // aumenta tamanho
+  opacity: 0.25,
   zIndex: 0,
   pointerEvents: "none",
 };
@@ -234,7 +240,7 @@ const leftColumn = {
   width: "58%",
   position: "relative",
   zIndex: 2,
-  paddingTop: "90px",
+  paddingTop: "40px",
   paddingRight: "30px",
   boxSizing: "border-box",
 };
@@ -249,8 +255,8 @@ const rightColumn = {
   paddingTop: "70px",
 };
 
-const brandLogo = {
-  width: "110px",
+const topLogo = {
+  width: "200px",
   objectFit: "contain",
 };
 
@@ -296,14 +302,14 @@ const card = {
 
 const cardTitle = {
   margin: 0,
-  fontSize: "22px",
+  fontSize: "30px",
   color: "#555",
   fontWeight: "700",
   textAlign: "center",
 };
 
 const cardLogo = {
-  width: "78px",
+  width: "200px",
   objectFit: "contain",
   marginBottom: "6px",
 };
@@ -381,11 +387,6 @@ const registerIcon = {
   opacity: 0.55,
 };
 
-const institutionIcon = {
-  fontSize: "28px",
-  opacity: 0.55,
-};
-
 const erroBox = {
   width: "100%",
   background: "#fdecea",
@@ -409,11 +410,19 @@ const sucessoBox = {
 };
 const topBar = {
   position: "absolute",
-  top: "0",
-  left: "10px",
+  top: "20px",
+  left: "0px",
   right: "10px",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
   zIndex: 3,
+};
+const leftLogo = {
+  width: "200px",
+  height: "auto",
+  objectFit: "contain",
+  display: "block",
+  marginBottom: "18px",
+  marginLeft: "-55px",
 };

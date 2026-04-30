@@ -126,25 +126,20 @@ export default function CadastroInstituicao() {
           style={rightDecoration}
         />
 
-        <div style={leftColumn}>
-          <h1 style={title}>
-            Cadastre sua instituição e
-            <br />
-            amplie o alcance da sua causa
-          </h1>
-
-          <p style={subtitle}>
-            Preencha as informações da instituição para iniciar o processo de
-            cadastro. Após a análise do administrador, sua conta poderá criar
-            campanhas e arrecadar pela plataforma.
-          </p>
-        </div>
-
         <div style={rightColumn}>
+          
           <div style={card}>
-            <h2 style={cardTitle}>
-              Cadastre-se <span style={titleIcon}>🏛️</span>
-            </h2>
+            <div style={titleWrapper}>
+              <h2 style={cardTitle}>Cadastre-se</h2>
+
+              <img 
+                src="/icon-insti.png" 
+                alt="Cadastro de Instituição" 
+                style={registerIcon}
+              />
+            </div>
+
+            
 
             {erro && <div style={erroBox}>{erro}</div>}
 
@@ -270,6 +265,21 @@ export default function CadastroInstituicao() {
             </form>
           </div>
         </div>
+
+        <div style={leftColumn}>
+          <h1 style={title}>
+            Cadastre sua instituição e
+            <br />
+            amplie o alcance da sua causa
+          </h1>
+
+          <p style={subtitle}>
+            Preencha as informações da instituição para iniciar o processo de
+            cadastro. Após a análise do administrador, sua conta poderá criar
+            campanhas e arrecadar pela plataforma.
+          </p>
+        </div>
+
       </div>
     </div>
   );
@@ -326,10 +336,10 @@ const topIcon = {
 
 const rightDecoration = {
   position: "absolute",
-  right: "-210px",
+  right: "-550px",
   top: "-50px",
-  height: "700px",
-  opacity: 0.70,
+  height: "900px",
+  opacity: 0.25,
   zIndex: 0,
   pointerEvents: "none",
 };
@@ -499,4 +509,16 @@ const sucessoBox = {
   padding: "12px",
   borderRadius: "12px",
   fontSize: "13px",
+};
+const registerIcon = {
+  width: "28px",
+  height: "28px",
+  objectFit: "contain",
+  opacity: 0.55,
+};
+
+const titleWrapper = {
+  display: "flex",
+  alignItems: "center",
+  gap: "10px", // espaço entre texto e ícone
 };

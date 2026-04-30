@@ -143,232 +143,239 @@ export default function NovaCampanha() {
     }
   }
 
-  return (
+ return (
+  <div
+    style={{
+      minHeight: "100vh",
+      background: "#f5f7fb",
+      padding: "55px 20px",
+      position: "relative",
+      overflow: "hidden",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    }}
+  >
+    <img
+      src="/elos-verticais-esquerda.png"
+      alt=""
+      style={{
+        position: "absolute",
+        left: "-400px",
+        top: "10px",
+        height: "650px",
+        opacity: 0.25,
+        zIndex: 0,
+        pointerEvents: "none",
+      }}
+    />
+
+    <img
+      src="/elos-verticais.png"
+      alt=""
+      style={{
+        position: "absolute",
+        right: "-400px",
+        top: "10px",
+        height: "650px",
+        opacity: 0.25,
+        zIndex: 0,
+        pointerEvents: "none",
+      }}
+    />
+
     <div
       style={{
-        minHeight: "100vh",
-        background: "#f5f7fb",
-        padding: "40px 20px",
+        maxWidth: "760px",
+        width: "100%",
+        background: "#fff",
+        borderRadius: "28px",
+        padding: "36px",
+        boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+        position: "relative",
+        zIndex: 1,
       }}
     >
-      <div
+      <h1
         style={{
-          maxWidth: "700px",
-          margin: "0 auto",
-          background: "#fff",
-          borderRadius: "16px",
-          padding: "30px",
-          boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
+          margin: "0 0 10px 0",
+          fontSize: "30px",
+          color: "#2f8f87",
+          textAlign: "center",
+          fontWeight: "bold",
         }}
       >
-        <h1
+        Criar Nova Campanha
+      </h1>
+
+      <p
+        style={{
+          margin: "0 0 30px 0",
+          color: "#666",
+          fontSize: "15px",
+          textAlign: "center",
+        }}
+      >
+        Preencha os dados abaixo para publicar uma nova campanha.
+      </p>
+
+      {mensagem && (
+        <div
           style={{
-            marginBottom: "10px",
-            fontSize: "28px",
-            color: "#222",
+            background: "#daf6f4",
+            color: "#2f8f87",
+            padding: "12px",
+            borderRadius: "12px",
+            marginBottom: "20px",
+            border: "1px solid #b8d2cd",
           }}
         >
-          Criar nova campanha
-        </h1>
+          {mensagem}
+        </div>
+      )}
 
-        <p
+      {erro && (
+        <div
           style={{
-            marginBottom: "30px",
-            color: "#666",
+            background: "#fff1f2",
+            color: "#9f1239",
+            padding: "12px",
+            borderRadius: "12px",
+            marginBottom: "20px",
+            border: "1px solid #fecdd3",
+          }}
+        >
+          {erro}
+        </div>
+      )}
+
+      {carregandoInstituicao ? (
+        <div
+          style={{
+            background: "#daf6f4",
+            color: "#2f8f87",
+            padding: "14px",
+            borderRadius: "12px",
             fontSize: "15px",
+            border: "1px solid #b8d2cd",
           }}
         >
-          Preencha os dados abaixo para publicar uma nova campanha.
-        </p>
+          Carregando dados da instituição...
+        </div>
+      ) : (
+        <form
+          onSubmit={criarCampanha}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
+          }}
+        >
+          <div>
+            <label style={labelStyle}>Título</label>
 
-        {mensagem && (
-          <div
-            style={{
-              background: "#d4edda",
-              color: "#155724",
-              padding: "12px",
-              borderRadius: "8px",
-              marginBottom: "20px",
-              border: "1px solid #c3e6cb",
-            }}
-          >
-            {mensagem}
+            <input
+              type="text"
+              value={titulo}
+              onChange={(e) => setTitulo(e.target.value)}
+              placeholder="Digite o título da campanha"
+              style={inputStyle}
+            />
           </div>
-        )}
 
-        {erro && (
-          <div
-            style={{
-              background: "#f8d7da",
-              color: "#721c24",
-              padding: "12px",
-              borderRadius: "8px",
-              marginBottom: "20px",
-              border: "1px solid #f5c6cb",
-            }}
-          >
-            {erro}
-          </div>
-        )}
+          <div>
+            <label style={labelStyle}>Descrição</label>
 
-        {carregandoInstituicao ? (
-          <div
-            style={{
-              background: "#eef3f8",
-              color: "#335",
-              padding: "14px",
-              borderRadius: "10px",
-              fontSize: "15px",
-            }}
-          >
-            Carregando dados da instituição...
+            <textarea
+              value={descricao}
+              onChange={(e) => setDescricao(e.target.value)}
+              placeholder="Descreva a campanha"
+              style={{
+                ...inputStyle,
+                minHeight: "140px",
+                resize: "vertical",
+              }}
+            />
           </div>
-        ) : (
-          <form
-            onSubmit={criarCampanha}
+
+          <div>
+            <label style={labelStyle}>Meta em reais</label>
+
+            <input
+              type="number"
+              min="1"
+              step="0.01"
+              value={meta}
+              onChange={(e) => setMeta(e.target.value)}
+              placeholder="Ex: 5000"
+              style={inputStyle}
+            />
+          </div>
+
+          <div
             style={{
               display: "flex",
-              flexDirection: "column",
-              gap: "20px",
+              gap: "12px",
+              marginTop: "10px",
             }}
           >
-            <div>
-              <label
-                style={{
-                  display: "block",
-                  marginBottom: "8px",
-                  fontWeight: "600",
-                  color: "#333",
-                }}
-              >
-                Título
-              </label>
-
-              <input
-                type="text"
-                value={titulo}
-                onChange={(e) => setTitulo(e.target.value)}
-                placeholder="Digite o título da campanha"
-                style={{
-                  width: "100%",
-                  padding: "14px",
-                  borderRadius: "10px",
-                  border: "1px solid #ccc",
-                  fontSize: "15px",
-                  outline: "none",
-                  boxSizing: "border-box",
-                }}
-              />
-            </div>
-
-            <div>
-              <label
-                style={{
-                  display: "block",
-                  marginBottom: "8px",
-                  fontWeight: "600",
-                  color: "#333",
-                }}
-              >
-                Descrição
-              </label>
-
-              <textarea
-                value={descricao}
-                onChange={(e) => setDescricao(e.target.value)}
-                placeholder="Descreva a campanha"
-                style={{
-                  width: "100%",
-                  minHeight: "140px",
-                  padding: "14px",
-                  borderRadius: "10px",
-                  border: "1px solid #ccc",
-                  fontSize: "15px",
-                  outline: "none",
-                  resize: "vertical",
-                  boxSizing: "border-box",
-                }}
-              />
-            </div>
-
-            <div>
-              <label
-                style={{
-                  display: "block",
-                  marginBottom: "8px",
-                  fontWeight: "600",
-                  color: "#333",
-                }}
-              >
-                Meta em reais
-              </label>
-
-              <input
-                type="number"
-                min="1"
-                step="0.01"
-                value={meta}
-                onChange={(e) => setMeta(e.target.value)}
-                placeholder="Ex: 5000"
-                style={{
-                  width: "100%",
-                  padding: "14px",
-                  borderRadius: "10px",
-                  border: "1px solid #ccc",
-                  fontSize: "15px",
-                  outline: "none",
-                  boxSizing: "border-box",
-                }}
-              />
-            </div>
-
-            <div
+            <button
+              type="button"
+              onClick={() => router.push("/")}
+              disabled={salvando}
               style={{
-                display: "flex",
-                gap: "12px",
-                marginTop: "10px",
+                flex: 1,
+                background: "#f3f4f6",
+                color: "#333",
+                border: "none",
+                padding: "14px",
+                borderRadius: "999px",
+                cursor: salvando ? "not-allowed" : "pointer",
+                fontWeight: "700",
+                opacity: salvando ? 0.7 : 1,
               }}
             >
-              <button
-                type="button"
-                onClick={() => router.push("/")}
-                disabled={salvando}
-                style={{
-                  flex: 1,
-                  background: "#e0e0e0",
-                  color: "#333",
-                  border: "none",
-                  padding: "14px",
-                  borderRadius: "10px",
-                  cursor: salvando ? "not-allowed" : "pointer",
-                  fontWeight: "600",
-                  opacity: salvando ? 0.7 : 1,
-                }}
-              >
-                Cancelar
-              </button>
+              Cancelar
+            </button>
 
-              <button
-                type="submit"
-                disabled={salvando}
-                style={{
-                  flex: 1,
-                  background: "#1976d2",
-                  color: "#fff",
-                  border: "none",
-                  padding: "14px",
-                  borderRadius: "10px",
-                  cursor: salvando ? "not-allowed" : "pointer",
-                  fontWeight: "600",
-                  opacity: salvando ? 0.7 : 1,
-                }}
-              >
-                {salvando ? "Criando..." : "Criar campanha"}
-              </button>
-            </div>
-          </form>
-        )}
-      </div>
+            <button
+              type="submit"
+              disabled={salvando}
+              style={{
+                flex: 1,
+                background: "#2f8f87",
+                color: "#fff",
+                border: "none",
+                padding: "14px",
+                borderRadius: "999px",
+                cursor: salvando ? "not-allowed" : "pointer",
+                fontWeight: "700",
+                opacity: salvando ? 0.7 : 1,
+              }}
+            >
+              {salvando ? "Criando..." : "Criar campanha"}
+            </button>
+          </div>
+        </form>
+      )}
     </div>
-  );
+  </div>
+);
+
 }
+const labelStyle = {
+  display: "block",
+  marginBottom: "8px",
+  fontWeight: "700",
+  color: "#2f8f87",
+};
+
+const inputStyle = {
+  width: "100%",
+  padding: "14px",
+  borderRadius: "14px",
+  border: "1px solid #d0d7de",
+  fontSize: "15px",
+  outline: "none",
+  boxSizing: "border-box",
+};

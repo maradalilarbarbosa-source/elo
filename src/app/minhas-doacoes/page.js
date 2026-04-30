@@ -55,54 +55,55 @@ export default function MinhasDoacoesPage() {
     if (!data) return "-";
     return new Date(data).toLocaleString("pt-BR");
   }
-
-  return (
-    <>
+return (
+  <>
     <Navbar />
-     <div
+
+    <div
       style={{
         minHeight: "100vh",
         background: "#f5f7fb",
-        padding: "40px 20px"
+        padding: "55px 20px",
+        position: "relative",
+        overflow: "hidden",
       }}
-     >
+    >
+      <img src="/elos-verticais-esquerda.png" alt="" style={eloEsquerda} />
+      <img src="/elos-verticais.png" alt="" style={eloDireita} />
+
       <div
         style={{
           maxWidth: "900px",
           margin: "0 auto",
           background: "#fff",
-          borderRadius: "16px",
-          padding: "30px",
-          boxShadow: "0 8px 24px rgba(0,0,0,0.08)"
+          borderRadius: "28px",
+          padding: "36px",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+          position: "relative",
+          zIndex: 1,
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "30px"
-          }}
-        >
-          <div>
-            <h1 style={{ marginBottom: "8px" }}>Minhas doações</h1>
-            <p style={{ color: "#666" }}>
-              Acompanhe o status das doações que você já realizou.
-            </p>
-          </div>
-
-          <button
-            onClick={() => router.push("/")}
+        <div style={{ textAlign: "center", marginBottom: "30px" }}>
+          <h1
             style={{
-              background: "#ccc",
-              border: "none",
-              padding: "12px 18px",
-              borderRadius: "8px",
-              cursor: "pointer"
+              margin: "0 0 10px 0",
+              fontSize: "32px",
+              fontWeight: "700",
+              color: "#2f8f87",
             }}
           >
-            Voltar
-          </button>
+            Minhas Doações
+          </h1>
+
+          <p
+            style={{
+              margin: 0,
+              color: "#5f6b7a",
+              fontSize: "16px",
+            }}
+          >
+            Acompanhe o status das doações que você já realizou.
+          </p>
         </div>
 
         {loading ? (
@@ -114,10 +115,10 @@ export default function MinhasDoacoesPage() {
             style={{
               background: "#f8f9fa",
               border: "1px solid #e0e0e0",
-              borderRadius: "12px",
+              borderRadius: "18px",
               padding: "24px",
               textAlign: "center",
-              color: "#555"
+              color: "#555",
             }}
           >
             <h3 style={{ marginBottom: "10px", color: "#333" }}>
@@ -131,13 +132,13 @@ export default function MinhasDoacoesPage() {
             <button
               onClick={() => router.push("/campanhas")}
               style={{
-                background: "#1976d2",
+                background: "#2f8f87",
                 color: "#fff",
                 border: "none",
                 padding: "12px 20px",
-                borderRadius: "8px",
+                borderRadius: "999px",
                 fontWeight: "bold",
-                cursor: "pointer"
+                cursor: "pointer",
               }}
             >
               Ver campanhas ativas
@@ -148,14 +149,22 @@ export default function MinhasDoacoesPage() {
             <div
               key={doacao.id}
               style={{
-                border: "1px solid #e0e0e0",
-                borderRadius: "12px",
-                padding: "20px",
+                border: "1px solid #e2e8f0",
+                borderRadius: "18px",
+                padding: "22px",
                 marginBottom: "16px",
-                background: "#fafafa"
+                background: "#fafafa",
               }}
             >
-              <h3 style={{ marginBottom: "10px" }}>
+              <h3
+                style={{
+                  margin: "0 0 12px 0",
+                  fontSize: "20px",
+                  fontWeight: "700",
+                  textAlign: "center",
+                  color: "#1f2937",
+                }}
+              >
                 {doacao.campanha_titulo || "Campanha"}
               </h3>
 
@@ -174,7 +183,8 @@ export default function MinhasDoacoesPage() {
               </p>
 
               <p style={{ marginBottom: "8px" }}>
-                <strong>Data da doação:</strong> {formatarData(doacao.data_doacao)}
+                <strong>Data da doação:</strong>{" "}
+                {formatarData(doacao.data_doacao)}
               </p>
 
               <p style={{ marginBottom: "8px" }}>
@@ -183,11 +193,11 @@ export default function MinhasDoacoesPage() {
                   style={{
                     color:
                       doacao.status === "aprovado"
-                        ? "#28a745"
+                        ? "#2f8f87"
                         : doacao.status === "rejeitado"
                         ? "#d32f2f"
                         : "#f57c00",
-                    fontWeight: "bold"
+                    fontWeight: "bold",
                   }}
                 >
                   {doacao.status}
@@ -196,7 +206,8 @@ export default function MinhasDoacoesPage() {
 
               {doacao.status === "rejeitado" && doacao.motivo_rejeicao && (
                 <p style={{ marginBottom: "8px", color: "#d32f2f" }}>
-                  <strong>Motivo da rejeição:</strong> {doacao.motivo_rejeicao}
+                  <strong>Motivo da rejeição:</strong>{" "}
+                  {doacao.motivo_rejeicao}
                 </p>
               )}
 
@@ -207,7 +218,7 @@ export default function MinhasDoacoesPage() {
               )}
 
               {doacao.status === "aprovado" && (
-                <p style={{ color: "#28a745", marginTop: "10px" }}>
+                <p style={{ color: "#2f8f87", marginTop: "10px" }}>
                   Sua doação foi validada com sucesso pela instituição.
                 </p>
               )}
@@ -215,7 +226,26 @@ export default function MinhasDoacoesPage() {
           ))
         )}
       </div>
-     </div>
-   </>
-  );
+    </div>
+  </>
+ );
 }
+const eloEsquerda = {
+  position: "absolute",
+  left: "-400px",
+  top: "80px",
+  height: "650px",
+  opacity: 0.25,
+  zIndex: 0,
+  pointerEvents: "none",
+};
+
+const eloDireita = {
+  position: "absolute",
+  right: "-400px",
+  top: "80px",
+  height: "650px",
+  opacity: 0.25,
+  zIndex: 0,
+  pointerEvents: "none",
+};

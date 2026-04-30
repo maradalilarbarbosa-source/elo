@@ -88,7 +88,7 @@ export default function Navbar({ usuario, instituicao }) {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: "18px 40px",
+        padding: "14px 40px",
         borderBottom: "1px solid #e5e7eb",
         background: "#ffffff",
         position: "sticky",
@@ -102,25 +102,19 @@ export default function Navbar({ usuario, instituicao }) {
           cursor: "pointer",
         }}
       >
-        <h2
-          style={{
-            color: "#1976d2",
-            margin: 0,
-            fontSize: "24px",
-          }}
-        >
-          Projeto ELO
-        </h2>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+  <img src="/logo-pequena.png" style={{ height: "50px" }} />
 
-        <p
-          style={{
-            margin: 0,
-            fontSize: "13px",
-            color: "#666",
-          }}
-        >
-          Solidariedade conectada pela tecnologia
-        </p>
+  <div>
+    <strong style={{ color: "#2f8f87", fontSize: "18px" }}>
+      Elo
+    </strong>
+
+    <div style={{ fontSize: "11px", color: "#777" }}>
+      Solidariedade conectada pela tecnologia
+    </div>
+  </div>
+</div>
       </div>
 
       <div
@@ -189,23 +183,23 @@ export default function Navbar({ usuario, instituicao }) {
 }
 
 const botaoPrimario = {
-  background: "#1976d2",
+  background: "#2f8f87",
   color: "#fff",
   border: "none",
   padding: "10px 16px",
-  borderRadius: "8px",
+  borderRadius: "999px",
   cursor: "pointer",
-  fontWeight: "bold",
+  fontWeight: "600",
 };
 
 const botaoSecundario = {
   background: "#fff",
-  color: "#1976d2",
-  border: "1px solid #1976d2",
+  color: "#2f8f87",
+  border: "1px solid #2f8f87",
   padding: "10px 16px",
-  borderRadius: "8px",
+  borderRadius: "999px",
   cursor: "pointer",
-  fontWeight: "bold",
+  fontWeight: "600",
 };
 
 const botaoSair = {
@@ -213,7 +207,7 @@ const botaoSair = {
   color: "#fff",
   border: "none",
   padding: "10px 16px",
-  borderRadius: "8px",
+  borderRadius: "999px",
   cursor: "pointer",
-  fontWeight: "bold",
+  fontWeight: "600",
 };

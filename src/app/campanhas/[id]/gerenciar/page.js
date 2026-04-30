@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function GerenciarCampanha() {
   const params = useParams();
@@ -80,7 +81,7 @@ export default function GerenciarCampanha() {
         return;
       }
 
-      alert(data.message);
+      toast.success(data.message);
       await carregarDados();
     } catch (error) {
       console.error("Erro ao validar doação:", error);
@@ -123,27 +124,72 @@ export default function GerenciarCampanha() {
   }
 
   return (
-    <div
+  <div
+    style={{
+      minHeight: "100vh",
+      background: "#f5f7fb",
+      padding: "55px 20px",
+      position: "relative",
+      overflow: "hidden",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    }}
+  >
+    <img
+      src="/elos-verticais-esquerda.png"
+      alt=""
       style={{
-        minHeight: "100vh",
-        background: "#f5f7fb",
-        padding: "40px 20px",
+        position: "absolute",
+        left: "-400px",
+        top: "10px",
+        height: "650px",
+        opacity: 0.25,
+        zIndex: 0,
+        pointerEvents: "none",
       }}
-    >
+    />
+
+    <img
+      src="/elos-verticais.png"
+      alt=""
+      style={{
+        position: "absolute",
+        right: "-400px",
+        top: "10px",
+        height: "650px",
+        opacity: 0.25,
+        zIndex: 0,
+        pointerEvents: "none",
+      }}
+    />
       <div
         style={{
           maxWidth: "900px",
+          width: "100%",
           margin: "0 auto",
           background: "#fff",
-          borderRadius: "16px",
-          padding: "30px",
-          boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
+          borderRadius: "28px",
+          padding: "36px",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+          position: "relative",
+          zIndex: 1,
         }}
       >
-        <h1 style={{ marginBottom: "10px" }}>Gerenciar campanha</h1>
+        <h1
+          style={{
+            margin: "0 0 10px 0",
+            fontSize: "30px",
+            color: "#2f8f87",
+            textAlign: "center",
+            fontWeight: "bold",
+          }}
+        >
+          Gerenciar Campanha
+        </h1>
 
-        <p style={{ color: "#666", marginBottom: "30px" }}>
-          Aqui você pode visualizar e gerenciar sua campanha.
+        <p style={{ color: "#666", marginBottom: "30px", textAlign: "center" }}>
+          Aqui você acompanha o histórico de doações da campanha.
         </p>
 
         <h2>{campanha.titulo}</h2>
@@ -181,7 +227,7 @@ export default function GerenciarCampanha() {
                     )
                   : 0
               }%`,
-              background: "#28a745",
+              background: "#2f8f87",
               height: "100%",
             }}
           />
@@ -198,11 +244,11 @@ export default function GerenciarCampanha() {
           <button
             onClick={() => router.push(`/campanhas/${campanha.id}/editar`)}
             style={{
-              background: "#1976d2",
+              background: "#2f8f87",
               color: "#fff",
               border: "none",
               padding: "12px 20px",
-              borderRadius: "8px",
+              borderRadius: "999px",
               cursor: "pointer",
             }}
           >
@@ -212,10 +258,10 @@ export default function GerenciarCampanha() {
           <button
             onClick={() => router.push("/")}
             style={{
-              background: "#ccc",
+              background: "#f3f4f6",
               border: "none",
               padding: "12px 20px",
-              borderRadius: "8px",
+              borderRadius: "999px",
               cursor: "pointer",
             }}
           >
@@ -274,7 +320,7 @@ export default function GerenciarCampanha() {
                   style={{
                     color:
                       doacao.status === "aprovado"
-                        ? "#28a745"
+                        ? "#2f8f87"
                         : doacao.status === "rejeitado"
                         ? "#d32f2f"
                         : "#f57c00",
@@ -319,7 +365,7 @@ export default function GerenciarCampanha() {
                       onClick={() => validarDoacao(doacao.id, "aprovado")}
                       disabled={processandoId === doacao.id}
                       style={{
-                        background: "#28a745",
+                        background: "#2f8f87",
                         color: "#fff",
                         border: "none",
                         padding: "10px 16px",
