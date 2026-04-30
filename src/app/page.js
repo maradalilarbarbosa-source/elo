@@ -220,15 +220,21 @@ export default function Home() {
   const ehDoador = !!usuario && !instituicao && !ehAdmin;
 
   return (
-    <div style={{ fontFamily: "Arial, sans-serif" }}>
+    <div
+        style={{
+            position: "relative",
+            minHeight: "100vh",
+            overflowX: "visible", // ✅ libera lateral
+          }}
+      >
       {estaLogado && (
        <Navbar usuario={usuario} instituicao={instituicao} />
       )}
       
     
-{!estaLogado && (
+    {!estaLogado && (
   
-  <div
+    <div
     style={{
       position: "relative",
       minHeight: "100vh",
@@ -239,6 +245,7 @@ export default function Home() {
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "flex-start",
+      
     }}
   >
 
@@ -473,12 +480,11 @@ export default function Home() {
       alt="Fundo decorativo"
       style={{
         position: "absolute",
-        bottom: 0,
-        left: 0,
-        width: "100vw",
-        maxHeight: "800px", // 👈 controla a altura aqui
-        objectFit: "cover", // 👈 corta o excesso
-       // transform: "translateY(100px)",
+        bottom: -60,
+        left: -360, // 👈 fixa na esquerda
+        width: "200vw", // 👈 cresce pra direita
+        minWidth: "2300px", // opcional
+        height: "1000px", // 👈 altura
         zIndex: 1,
         pointerEvents: "none",
       }}
