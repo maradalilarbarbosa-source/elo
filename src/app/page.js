@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getCampanhas, deleteCampanha } from "@/services/campanhaService";
-//import CampanhaCard from "@/components/CampanhaCard";
+import CampanhaCard from "@/components/CampanhaCard";
 import { toast } from "react-toastify";
 import ModalConfirmacao from "@/components/ModalConfirmacao";
 import Navbar from "@/components/Navbar";
@@ -11,7 +11,7 @@ import Navbar from "@/components/Navbar";
 export default function Home() {
   const [campanhas, setCampanhas] = useState([]);
   const [campanhasDoadas, setCampanhasDoadas] = useState([]);
-  //const [deletandoId, setDeletandoId] = useState(null);
+  const [deletandoId, setDeletandoId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [campanhaParaExcluir, setCampanhaParaExcluir] = useState(null);
   const [usuario, setUsuario] = useState(null);
@@ -621,7 +621,7 @@ export default function Home() {
           </div>
         )}
 
-        {!loading && ehInstituicao && campanhas.length === 0 && (
+        {!loading && !ehAdmin && ehInstituicao && campanhas.length === 0 && (
           <div
             style={{
               background: "#f8f9fa",
@@ -659,13 +659,14 @@ export default function Home() {
           </div>
         )}
 
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-        gap: "16px",
-      }}
-    >
+    {!loading && !ehAdmin && ehInstituicao && (
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+          gap: "16px",
+        }}
+      >
             {instituicaoAprovada && (
   <div
     onClick={() => router.push("/nova-campanha")}
@@ -814,7 +815,8 @@ export default function Home() {
                 </div>
               );
             })}
-          </div>
+          </div>         
+       )}
           
 
         
